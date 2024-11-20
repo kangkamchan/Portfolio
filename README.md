@@ -27,6 +27,9 @@
 - 회원가입, 로그인, 로그아웃, 자동 로그인
   - 회원 데이터 CRUD
   - Ajax 통신을 통해 아이디 중복체크 비동기 처리
+  - AuthenticatedUserFilter로인해 원하는 페이지가 아닌 로그인 페이지로 이동 시
+    LoginController에서 referer 헤더로 원하는 페이지의 URL을 확인후 URI부분을 추출 후
+    로그인 성공 시 해당 URI로 리다이렉트하여 사용자가 원하는 페이지로 이동하도록 구현
 - 1:1 문의 게시판
   - 게시판 데이터 CRUD
   - 파일 업로드, 다운로드 기능
@@ -43,6 +46,6 @@
 - MVC 패턴에 대한 이해, 데이터 CRUD 구현 숙련도 증가
 - 모듈화를 통한 효율적인 개발방식 학습
 
-**[프레젠테이션](project/TSPOON/TSPOON_porject.pdf)** | **[주요 소스코드](project/TSPOON/TSPOON_project.md)** | **[github](https://github.com/GyeongMin2/MyPortfolio/tree/main/project/TSPOON/src/main/java)**
+**[프레젠테이션](project/tspoon/강감찬_tspoon.pptx)** | **[주요 소스코드](project/tspoon/강감찬_tspoon_project.md)** | **[github](https://github.com/kangkamchan/Portfolio/tree/main/project/tspoon)**
 
 ***
