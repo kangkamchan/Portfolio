@@ -21,6 +21,7 @@
         response.getWriter().write("{\"result\": " + result + "}");
 	}
 ```
+
 ###프론트엔드 코드
 ```html
     <div class="formBox">
@@ -68,6 +69,7 @@ $(document).ready(function() {
   - ajax를 통한 ID 중복 검사
   - Json 객체로 결과를 반환
 ---
+
 ##LoginController.java
 ```java
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -131,11 +133,13 @@ $(document).ready(function() {
 		response.sendRedirect("../common/main.do");
 	}
 ```
+
 ####주요 기능
   - request의 referer header를 활용하여 회원이 원래 요청했던 페이지의 URL 정보를 불러옴
   - String의 내장메서드를 활용하여 URL에서 URI 정보를 추출하여 redirect시 활용함
   - URLEncoder와 URLDecoder를 활용하여 원래 요청 페이지의 querystring 부분을 보존함
 ---
+
 ##JSFunc.java
 ```java
 public class JSFunc {
@@ -191,6 +195,7 @@ public class JSFunc {
 	}
 }
 ```
+
 ####주요 기능
   - Java 서블릿에서 JavaScript 코드를 동적으로 생성하여 클라이언트(브라우저)로 전달하는 유틸리티 클래스
   - 사용자에게 알림 메시지 전송, 뒤로가기 등 기능을 간편하게 재사용 할 수 있음
