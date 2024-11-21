@@ -64,7 +64,7 @@
 - 첫 협업 프로젝트 경험
   - 의사소통 및 협업 능력 향상
 
-**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](project/onlineLecture/onlineLecture_project.md)** | **[github](https://github.com/TheLastOnlineLecture/onlineLecture)** 
+**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](/project/onlinelecture/onlinelecture_project.md)** | **[github](https://github.com/TheLastOnlineLecture/onlineLecture)** 
 
 ***
 
