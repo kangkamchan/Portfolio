@@ -1,0 +1,45 @@
+package net.haebup.utils;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+public class CommonDateUtil {
+	public CommonDateUtil() {}
+
+	// LocalDate타입 --> Date타입으로 변환
+	public Date toDate(LocalDate localDate) {
+		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	// LocalDateTime --> DateTime 으로 변환
+	public Date toDateTime(LocalDateTime localDateTime) {
+		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	// Date 타입 --> LocalDate 로 변환
+	public LocalDate toLocalDate(Date date) {
+		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+	
+	// Date 타입 --> LocalDateTime 으로 변환
+	public LocalDateTime toLocalDateTime(Date date) {
+		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+
+	// Date 타입 --> LocalDateTime 문자열로 변환
+	public String dateTolocalDateTimeString(Date date) {
+		return this.toLocalDateTime(date).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
+
+	// Date 타입 --> LocalDateTime 문자열로 변환
+	public String localDateTimeToString(LocalDateTime localDateTime) {
+		return localDateTime.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+	}
+
+	
+	// 들어온 값이 해당 데이터 타입인지 아닌지 확인하는 로직 넣기(예외 처리 넣기)ㄴ
+}
