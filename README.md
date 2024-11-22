@@ -46,7 +46,7 @@
 - MVC 패턴에 대한 이해, 데이터 CRUD 구현 숙련도 증가
 - 모듈화를 통한 효율적인 개발방식 학습
 
-**[프레젠테이션](project/tspoon/강감찬_tspoon.pptx)** | **[주요 소스코드](project/tspoon/강감찬_tspoon_project.md)** | **[github](https://github.com/kangkamchan/Portfolio/tree/main/project/tspoon)**
+**[프레젠테이션](project/tspoon/강감찬_tspoon_ppt.pdf)** | **[주요 소스코드](project/tspoon/강감찬_tspoon_project.md)** | **[github](https://github.com/kangkamchan/Portfolio/tree/main/project/tspoon)**
 
 ***
 ### 2.[onlineLecture]
