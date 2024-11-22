@@ -54,17 +54,24 @@
 
 **역할**: 백엔드개발 및 공통 모듈 설계 및 DB설계 및 DDL관리
 **기술 스택**: Java, Servlet, JSP, MariaDB, Tomcat
-**주요 기능**: 회원가입, 로그인, 강의 구매, 결제, 게시판 등 기능 구현
+**주요 기능**:
+- 회원가입, 로그인, 강의 구매, 결제, 게시판 등 기능 구현
+- 동영상 업로드 및 재생 기능 구현
 
 **성과**:
-- 공통 모듈(페이지, Util, 백엔드로직) 설계를 통한 개발 효율성 증진 및 시간 단축
-- 회원가입 백엔드 유효성검사 구현하여 데이터 정합성 유지 및 보안 강화
+-  공통 모듈(유틸, 페이지) 설계
+	- jsp 페이지, 공통 백엔드로직 모듈화 하여 개발 효율성 증진 및 시간단축
+-  회원가입 백엔드 유효성검사 구현하여 데이터 정합성 유지 및 보안 강화
 - 데이터베이스 관리
   - DB 설계 및 DDL 관리
+  - SSH를 통한 DB접속 및 관리
+- 공통 모듈(유틸) 설계
+  - 모듈화된 구조, MVC 패턴적용
+  - 클린 코드 작성
 - 첫 협업 프로젝트 경험
   - 의사소통 및 협업 능력 향상
 
-**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](/project/onlinelecture/onlinelecture_project.md)** | **[github](https://github.com/TheLastOnlineLecture/onlineLecture)** 
+**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](project/onlineLecture/onlineLecture_project.md)** | **[github](https://github.com/TheLastOnlineLecture/onlineLecture)** 
 
 ***
 
@@ -92,6 +99,6 @@
   - 채팅 메시지 영구 저장 및 이전 대화 내역 조회 기능 구현
   - 읽지 않은 메시지 알림 기능 구현
 
-**[프레젠테이션](project/nanusam/nanusam_project.pdf)** | **[주요 소스코드](project/nanusam/nanusam_project.md)** | **[github](https://github.com/nanusam)**
+**[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/eduSecond/eduSecond_project.md)** | **[github](https://github.com/eduSecond)**
 
 ***
