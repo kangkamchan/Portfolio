@@ -83,23 +83,26 @@ public class ChatServer {
         log.info("에러메세지 :" + error.getMessage());
     }
 
-    private void processMessage(String message, Session session) {
+        private void processMessage(String message, Session session) {
+		//권한검증, DB 접근시 사용할 정보 초기화
         Integer groupIdx = (Integer)session.getUserProperties().get("groupIdx");
         String sender = (String)session.getUserProperties().get("memberId");
         ChatGroupDTO groupDTO = chatService.getGroup(groupIdx);
+		//groupIdx 에 해당하는 채팅방이 없을 경우
         if(groupDTO == null) {
             log.info("채팅방 없음");
             this.errCode = "003";
             sendErrorMessage(session, this.errCode);
             return;
         }
+		//해당 채팅방 권한 없는 회원이 접근한 경우
         if(!groupDTO.getSeller().equals(sender)&&!groupDTO.getCustomer().equals(sender)) {
             log.info("채팅방접근권한없는사람");
             this.errCode = "004";
             sendErrorMessage(session, this.errCode);
             return;
         }
-        //메시지 형식 receiver||message
+        //메시지 형식 receiver||message 에 위배된 경우
         if (message == null || !message.contains("\\|\\|")) {
             log.info("잘못된 메시지 형식: " + message);
             this.errCode = "005";
@@ -107,6 +110,7 @@ public class ChatServer {
             return;
         }
         String[] messageArr = message.split("\\|\\|");
+		//메시지 형식에 위배된 경우
         if (messageArr.length < 2) {
             log.info("메시지 형식 오류: " + message);
             this.errCode = "005";
@@ -114,34 +118,41 @@ public class ChatServer {
             return;
         }
         String receiver = messageArr[0];
+		//시스템 메시지 처리
         if(receiver.equals("system")) {
+			//예약 메시지 처리 system||reservation||예약메시지||예약자
             if (messageArr[1].equals("reservation")) {
+				//메시지 파싱
                 String content = messageArr[2];
                 String reservationMemberId = messageArr[3];
                 int goodsIdx = groupDTO.getGoodsIdx();
                 String customer = groupDTO.getCustomer();
                 GoodsDTO goodsDTO = goodsService.view(goodsIdx);
+				//상품정보가 없을 경우
                 if(goodsDTO == null) {
                     log.info("상품정보조회실패");
                     this.errCode = "006";
                     sendErrorMessage(session, this.errCode);
                     return;
                 }
-                log.info("상품조회성공");
+				//예약 처리 로직
                 goodsDTO.setIdx(goodsIdx);
                 goodsDTO.setStatus("R");
                 goodsDTO.setReservationId(reservationMemberId);
                 int reservationResult = goodsService.modifyStatus(goodsDTO);
+				//예약 처리 실패 경우
                 if(reservationResult <= 0) {
                     log.info("예약정보변경실패");
                     this.errCode = "006";
                     sendErrorMessage(session, this.errCode);
                     return;
                 }
+				//알림 처리 로직
                 alertService.regist(AlertDTO.builder()
                         .memberId(customer)
                         .content(goodsDTO.getName()+" 상품의 예약이 확정되었습니다.")
                         .build());
+				//db에 메시지 정보 등록
                 int messageIdx = chatService.messageRegist(ChatMessageDTO.builder()
                         .groupIdx(groupIdx)
                         .senderId("system")
@@ -149,12 +160,15 @@ public class ChatServer {
                         .readChk(isUserSessionConnected(reservationMemberId,session)?"Y":"N")
                         .build());
                 ChatMessageDTO messageDTO = chatService.getMessage(messageIdx);
+				//메시지 등록 실패시
                 if(messageDTO==null){
-                    log.info("시스템메시지 등록 실패");
+				    this.errCode = "006";
+                    sendErrorMessage(session, this.errCode);
                     return;
                 }
-                log.info("시스템메시지 등록 성공");
+				//채팅방 날짜정보 최신화
                 chatService.updateRecentDate(groupIdx);
+				//서버 -> 클라이언트 메시지 전송
                 session.getOpenSessions().forEach(s -> {
                     if (customer.equals(s.getUserProperties().get("memberId")) || sender.equals(s.getUserProperties().get("memberId"))) {
                         try {
@@ -170,10 +184,12 @@ public class ChatServer {
                     }
                 });
                 return;
-            }else if(messageArr[1].equals("disconnect")) {
+            }else if(messageArr[1].equals("disconnect")) {//상대가 채팅방을 나갔을 때
                 log.info("disconnect");
+				//메시지 파싱
                 String content = messageArr[2];
                 String receiverId = messageArr[3];
+				//메시지 DB에 등록
                 int messageIdx = chatService.messageRegist(ChatMessageDTO.builder()
                         .groupIdx(groupIdx)
                         .senderId("system")
@@ -181,15 +197,19 @@ public class ChatServer {
                         .readChk(isUserSessionConnected(receiverId,session)?"Y":"N")
                         .build());
                 ChatMessageDTO messageDTO = chatService.getMessage(messageIdx);
+				//메시지 등록 실패시
                 if(messageDTO==null){
                     log.info("시스템메시지 등록 실패");
                     return;
                 }
+				//알림 처리 로직
                 alertService.regist(AlertDTO.builder()
                         .memberId(receiverId)
                         .content(sender+" 님이 채팅방을 나갔습니다. 해당 채팅방은 사라집니다.")
                         .build());
+				//채팅방 정보 최신화
                 chatService.updateRecentDate(groupIdx);
+				//메시지 전송
                 session.getOpenSessions().forEach(s -> {
                     if (receiverId.equals(s.getUserProperties().get("memberId")) || sender.equals(s.getUserProperties().get("memberId"))) {
                         try {
@@ -207,13 +227,17 @@ public class ChatServer {
                 return;
             }
         }
+		//일반 메시지 처리
+		//해당 채팅방 권한 없는 회원이 접근한 경우
         if(!groupDTO.getSeller().equals(receiver)&&!groupDTO.getCustomer().equals(receiver)) {
             log.info("채팅방접근권한없는사람");
             this.errCode = "004";
             sendErrorMessage(session, this.errCode);
             return;
         }
+		//메시지 파싱
         String content = messageArr[1];
+		//db에 메시지 등록
         int messageIdx = chatService.messageRegist(ChatMessageDTO.builder()
                 .groupIdx(groupIdx)
                 .senderId(sender)
@@ -221,14 +245,17 @@ public class ChatServer {
                 .readChk(isUserSessionConnected(receiver,session)?"Y":"N")
                 .build());
         ChatMessageDTO messageDTO = chatService.getMessage(messageIdx);
+		//메시지 등록 성공시
         if(messageDTO != null){
-            // 수신자에게 메시지를 전송
             log.info("db등록성공");
+			//알림 처리 로직
             alertService.regist(AlertDTO.builder()
                     .memberId(receiver)
                     .content(sender+" 님과의 채팅방에 새 메시지가 도착했습니다.")
                     .build());
+			//채팅방 정보 최신화
             chatService.updateRecentDate(groupIdx);
+			//메시지 전송
             session.getOpenSessions().forEach(s -> {
                 if (receiver.equals(s.getUserProperties().get("memberId"))||sender.equals(s.getUserProperties().get("memberId"))) {
                     try {
@@ -242,7 +269,7 @@ public class ChatServer {
                     }
                 }
             });
-        }else{
+        }else{//메시지 등록 실패시
             log.info("db등록실패");
             this.errCode = "006";
             sendErrorMessage(session, this.errCode);

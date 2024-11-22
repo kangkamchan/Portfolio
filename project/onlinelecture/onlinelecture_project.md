@@ -1,8 +1,17 @@
-# tspoon 주요 소스코드
+# onlinelecture 주요 소스코드
+---
+## 환경 설정
+- **JDK 버전** : 17
+- **Tomcat 버전** : 10.1.30
+
+## 개발환경 버전
+- **Eclipse**: 4.33.0
+- **JSTL**: 3.0.0
+- **MariaDB**: 10.11.9
+---
 ---
  
 ## BbsListController.java
-공통 게시판 리스트를 처리하는 Controller 클래스
 
 ### 백엔드 코드
 ```java

@@ -71,7 +71,7 @@
 - 첫 협업 프로젝트 경험
   - 의사소통 및 협업 능력 향상
 
-**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](project/onlineLecture/onlineLecture_project.md)** | **[github](https://github.com/TheLastOnlineLecture/onlineLecture)** 
+**[프레젠테이션](project/onlineLecture/onlinLecture_project.pdf)** | **[주요 소스코드](project/onlineLecture/onlineLecture_project.md)** 
 
 ***
 
@@ -91,14 +91,15 @@
   - 중고 물품 관리, 회원 관리 기능 구현
 
 **성과**:
-- Spring MVC, Spring Web을 활용한 확장성 있는 웹 애플리케이션 구현
-- MyBatis를 활용한 데이터베이스 처리
+- Spring MVC, Spring Web을 웹 애플리케이션 구현
+- MyBatis를 활용한 쿼리 작성법 숙달
 - 실시간 1:1 채팅 시스템 구현
-  - Spring WebSocket을 활용한 실시간 양방향 통신 구현
-  - WebSocket과 HTTP를 결합한 하이브리드 통신으로 성능 최적화
-  - 채팅 메시지 영구 저장 및 이전 대화 내역 조회 기능 구현
+  - WebSocket을 활용한 실시간 양방향 채팅 시스템 구현
+  - 웹소켓 세션에서 Http 세션을 사용할 수 있도록 구현
+  - 비동기 멀티스레드 방식으로 메시지 처리
+  - 채팅 메시지를 DB에 저장하여 이전 대화 내역을 조회 가능
   - 읽지 않은 메시지 알림 기능 구현
 
-**[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/eduSecond/eduSecond_project.md)** | **[github](https://github.com/eduSecond)**
+**[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/eduSecond/nanusam_project.md)** 
 
 ***
