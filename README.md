@@ -100,6 +100,6 @@
   - 채팅 메시지를 DB에 저장하여 이전 대화 내역을 조회 가능
   - 읽지 않은 메시지 알림 기능 구현
 
-**[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/eduSecond/nanusam_project.md)** 
+**[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/nanusam/nanusam_project.md)** 
 
 ***
