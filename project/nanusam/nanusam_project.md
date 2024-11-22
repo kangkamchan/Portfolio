@@ -294,8 +294,10 @@ public class ChatServer {
 ```
 #### onError() 메서드
 - 웹소켓에서 에러 발생시 에러를 처리하는 메서드
+```java
     @OnError
     public void onError(Session session, Throwable error) {
         log.info("웹소켓 에러발생");
         log.info("에러메세지 :" + error.getMessage());
     }
+```
