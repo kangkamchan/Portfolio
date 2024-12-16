@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QnA 상세보기</title>
+    <style>
+        /* 전체 컨테이너 스타일 */
+        .container {
+            max-width: 800px; /* 적당한 너비 설정 */
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* 제목 섹션 */
+        .title-section {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .title-section h2 {
+            margin: 0;
+            font-size: 1.5em;
+            color: #007bff;
+        }
+
+        /* 상태 표시 */
+        .status {
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .status.answered {
+            color: green;
+        }
+
+        .status.not-answered {
+            color: red;
+        }
+
+        /* 본문 스타일 */
+        .content {
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* 답변 리스트 스타일 */
+        .reply-list {
+            margin-top: 30px;
+        }
+
+        .reply {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .reply p {
+            margin: 0;
+        }
+
+        /* 버튼 및 삭제 섹션 */
+        .action-section {
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* 삭제 입력 필드 */
+        .delete-form label {
+            display: inline-block;
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .delete-form input {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* 이전 링크 버튼 스타일 */
+        .btn-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #6c757d;
+            color: #fff;
+            text-align: center;
+        }
+
+        .btn-link:hover {
+            background-color: #5a6268;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+
+    <h1>QnA 상세보기</h1>
+    <div>
+        <h2 th:text="'제목 : '+${qna.title}"></h2>
+        <p th:text="'내용 : '+${qna.content}"></p>
+        <p th:if="${qna.email != null}" th:text="'이메일: ' + ${qna.email}"></p>
+        <p th:text="${qna.answered} ? '답변 완료' : '미답변'"></p>
+
+        <div th:if="${qna.replies.size() > 0}">
+            <h3>답변:</h3>
+            <div th:each="reply : ${qna.replies}" class="reply">
+                <p th:text="'제목 :' + ${reply.title}"></p>
+                <p th:text="'내용 : ' + ${reply.content}"></p>
+            </div>
+        </div>
+
+        <div th:if="${!qna.answered}" class="action-section">
+            <form th:action="@{'/qna/delete/' + ${qna.qnaId}}" method="post" class="delete-form">
+                <label for="password">비밀번호:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제하기</button>
+            </form>
+        </div>
+    </div>
+    <a href="/qna/list" class="btn-link">이전</a>
+
+</div>
+</body>
+</html>

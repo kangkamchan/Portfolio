@@ -117,3 +117,29 @@
 - RestController와 Ajax 통신 사용법 숙달
 
 **[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/kmooc/kmooc.md)** 
+
+### 5.[학습공유 플랫폼 swc]
+
+> 학습공유와 학습내용 정리를 통한 동기부여와 학업성취도 향상을 목적으로 하는 플랫폼입니다.
+
+**역할**: 
+ - 학습게시물 등록, 조회, 수정, 삭제(파일업로드), 좋아요, 공유하기 기능 프론트, 백엔드 구현
+ - 오늘의학습 메인페이지 프론트, 백엔드 구현
+ - JWT Token 인증 확인 @CheckJwt 애너테이션과 Aspect 클래스 구현
+ - 에러메시지와 함께 지정 URI 로 리다이렉트 하는 ErrorUtil 구현
+ 
+ **기술 스택**: Java, SpringBoot, JPA, MyBatis, Thymeleaf, Javascript, MariaDB
+ 
+ **성과**:
+ 1. **RESTful API 설계 및 구현**  
+   - RESTful한 URI 네이밍 규칙을 적용하여 `RestController`를 개발.  
+   - API 정의서를 작성하여 팀원들과 원활한 협업 환경 구축.
+
+ 2. **AJAX 통신 및 JSON 데이터 처리**  
+   - AJAX를 활용하여 객체 리스트를 요청하고, 받은 JSON 데이터를 파싱하여 UI에 적용.  
+   - 비동기 통신을 통해 사용자 경험(UX) 개선.
+
+ 3. **공통 기능 모듈화**  
+   - 반복적인 작업을 줄이기 위해 애너테이션과 공통 Util 클래스를 구현.  
+   - 개발 효율성을 크게 향상시키고 유지보수성을 강화.
+ **[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/swc/swc.md)** 

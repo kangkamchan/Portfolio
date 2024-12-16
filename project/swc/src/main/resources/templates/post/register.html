@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Register</title>
+    <style>
+        .input-container {
+            display: flex;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .input-container input {
+            border: none;
+            flex: 1;
+            font-size: 14px;
+            outline: none;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            height: 40px; /* Fixed height */
+            overflow-y: auto;
+        }
+        .tag {
+            display: flex;
+            align-items: center;
+            background-color: #f1f1f1;
+            margin: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .tag span {
+            margin-right: 5px;
+        }
+        .tag button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #888;
+        }
+        .tag button:hover {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<script th:inline="javascript">
+    const error = [[${error}]];
+    if(error){
+        alert(error);
+    }
+</script>
+<h1>Post Register</h1>
+<form id="frm" action="/post/register" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><label for="title">제목</label></td>
+            <td><input type="text" name="title" id="title" th:maxlength="100"></td>
+        </tr>
+        <tr>
+            <td><label for="content">내용</label></td>
+            <td><textarea name="content" id="content" th:maxlength="2000"
+            ></textarea></td>
+        </tr>
+        <tr>
+            <td><label for="file">이미지</label></td>
+            <td><input type="file" name="file" id="file">파일선택</td>
+        </tr>
+        <tr>
+            <td>오늘의 학습 노출여부</td>
+            <td>
+                <input id="todayType_1" type="radio" name="todayType" value="1"><label for="todayType_1">노출</label>
+                <input id="todayType_0" type="radio" name="todayType" value="0"><label for="todayType_0">노출안함</label>
+            </td>
+        </tr>
+        <tr>
+            <td>오늘의 학습 노출기간</td>
+            <td>
+                <input id="displayAt" type="date" name="displayAt">
+                 &nbsp;~&nbsp;
+                <input id="displayEnd" type="date" name="displayEnd">
+            </td>
+        </tr>
+        <tr>
+            <td>해쉬태그</td>
+            <td>
+                    <!-- Tags will be dynamically added here -->
+                    <div class="input-container">
+                        <input type="text" id="tag-input" placeholder="10자 이내로 4개까지 등록 가능합니다.">
+                    </div>
+
+                    <div class="tag-container" id="tag-container">
+                        <!-- Tags will be dynamically added here -->
+                    </div>
+                    <input type="hidden" id="hashtag-input" name="hashtag" value="">
+            </td>
+        </tr>
+        <tr>
+            <td th:colspan="2">
+                <button type="submit" id="btnSubmit" onclick="prepareFormData()">등록</button>
+                <button type="reset" id="btnReset">초기화</button>
+                <button type="button" id="btnBack">목록으로</button>
+            </td>
+        </tr>
+    </table>
+    <script th:inline="javascript">
+        const tags = [];
+        const inputElement = document.getElementById('tag-input');
+        const hiddenInputElement = document.getElementById('hashtag-input');
+
+        inputElement.addEventListener('keydown', (event) => {
+            handleInput(event);
+            event.target.focus();
+        });
+
+        function handleInput(event) {
+            const input = event.target;
+            const value = input.value.trim();
+
+            if (event.key === 'Enter' && value && tags.length < 4) {
+                event.preventDefault();
+                if (value.length <= 10) {
+                    addTag(value.startsWith('#') ? value : `#${value}`);
+                    input.value = '';
+                } else {
+                    alert('Each tag can be up to 10 characters long.');
+                }
+            }
+        }
+
+        function addTag(value) {
+            if(value==null||value==='') return;
+            if(tags.includes(value)) return;
+            if(tags.length>=4) return;
+            tags.push(value);
+
+            const tagContainer = document.getElementById('tag-container');
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+
+            const span = document.createElement('span');
+            span.textContent = value;
+            tagElement.appendChild(span);
+
+            const button = document.createElement('button');
+            button.textContent = '×';
+            button.onclick = () => removeTag(value, tagElement);
+            tagElement.appendChild(button);
+
+            tagContainer.appendChild(tagElement);
+            updateHiddenInput();
+        }
+
+        function removeTag(value, tagElement) {
+            const index = tags.indexOf(value);
+            if (index > -1) {
+                tags.splice(index, 1);
+                tagElement.remove();
+                updateHiddenInput();
+            }
+        }
+
+        function updateHiddenInput() {
+            hiddenInputElement.value = tags.join(',');
+        }
+
+        function prepareFormData() {
+            updateHiddenInput();
+        }
+    </script>
+</form>
+</body>
+</html>

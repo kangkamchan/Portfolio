@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fullstack7.swc.mapper.PostMapper">
+    <select id="totalCount">
+        SELECT COUNT(DISTINCT postId)
+        FROM post
+        <where>
+            <if test="searchField != null and searchValue != null">
+                <choose>
+                    <when test="searchField == 'title'">
+                        title LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchField == 'content'">
+                        content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchField == 'topics'">
+                        topics = #{searchValue}
+                    </when>
+                    <when test="searchField == 'hashtag'">
+                        hashtag LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="searchDateBegin != null">
+                AND createdAt &gt;= #{searchDateBegin}
+            </if>
+            <if test="searchDateEnd != null">
+                AND createdAt &lt;= #{searchDateEnd}
+            </if>
+            AND memberId = #{memberId}
+        </where>
+    </select>
+    <select id="postList">
+        SELECT p.*, t.*, COUNT(t.postId) as thumbUpCount
+        FROM post p
+        LEFT JOIN thumbUp t ON p.postId = t.postId
+        <where>
+            <if test="searchField != null and searchValue != null">
+                <choose>
+                    <when test="searchField == 'title'">
+                        p.title LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchField == 'content'">
+                        p.content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchField == 'topics'">
+                        p.topics LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchField == 'hashtag'">
+                        p.hashtag LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="searchDateBegin != null">
+                AND p.createdAt &gt;= #{searchDateBegin}
+            </if>
+            <if test="searchDateEnd != null">
+                AND p.createdAt &lt;= #{searchDateEnd}
+            </if>
+            AND p.memberId = #{memberId}
+        </where>
+        GROUP BY p.postId
+        <choose>
+            <when test="sortField == 'thumbUps'">
+                    ORDER BY thumbUpCount ${sortDirection}, p.createdAt DESC
+            </when>
+            <otherwise>
+                ORDER BY p.createdAt ${sortDirection}
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="sharedTotalCount">
+        SELECT COUNT(DISTINCT p.postId)
+        FROM post p
+        INNER JOIN share s ON p.postId = s.postId
+        <where>
+            <if test="pageDTO.searchField != null and pageDTO.searchValue != null">
+                <choose>
+                    <when test="pageDTO.searchField == 'title'">
+                        p.title LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                    <when test="pageDTO.searchField == 'content'">
+                        p.content LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                    <when test="pageDTO.searchField == 'hashtag'">
+                        p.hashtag LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="pageDTO.searchDateBegin != null">
+                AND p.createdAt &gt;= #{pageDTO.searchDateBegin}
+            </if>
+            <if test="pageDTO.searchDateEnd != null">
+                AND p.createdAt &lt;= #{pageDTO.searchDateEnd}
+            </if>
+            <if test="type == 'my'">
+                AND p.memberId = #{memberId}
+            </if>
+            <if test="type == 'others'">
+                AND s.memberId = #{memberId}
+            </if>
+        </where>
+    </select>
+    <select id="getSharedList">
+        SELECT p.*, t.*, COUNT(distinct t.thumbUpId) as thumbUpCount, s.*
+        FROM post p
+        LEFT JOIN thumbUp t ON p.postId = t.postId
+        INNER JOIN share s ON p.postId = s.postId
+        <where>
+            <if test="pageDTO.searchField != null and pageDTO.searchValue != null">
+                <choose>
+                    <when test="pageDTO.searchField == 'title'">
+                        p.title LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                    <when test="pageDTO.searchField == 'content'">
+                        p.content LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                    <when test="pageDTO.searchField == 'hashtag'">
+                        p.hashtag LIKE CONCAT('%', #{pageDTO.searchValue}, '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="pageDTO.searchDateBegin != null">
+                AND p.createdAt &gt;= #{pageDTO.searchDateBegin}
+            </if>
+            <if test="pageDTO.searchDateEnd != null">
+                AND p.createdAt &lt;= #{pageDTO.searchDateEnd}
+            </if>
+            <if test="type == 'my'">
+                AND p.memberId = #{memberId}
+            </if>
+            <if test="type == 'others'">
+                AND s.memberId = #{memberId}
+            </if>
+        </where>
+        GROUP BY p.postId
+        <choose>
+            <when test="pageDTO.sortField == 'thumbUps'">
+                ORDER BY thumbUpCount ${pageDTO.sortDirection}, p.createdAt DESC
+            </when>
+            <otherwise>
+                ORDER BY p.createdAt ${pageDTO.sortDirection}
+            </otherwise>
+        </choose>
+        LIMIT #{pageDTO.offset}, #{pageDTO.pageSize}
+    </select>
+</mapper>

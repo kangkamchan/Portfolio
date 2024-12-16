@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{main/layout.html}"
+>
+<head>
+  <link th:href="@{/assets/css/myPage/myPage.css}" rel="stylesheet" />
+  <link th:href="@{/assets/css/myPage/myPageFriend.css}" rel="stylesheet" />
+  <script>
+    // 친구 삭제 함수
+    window.deleteFriend = function(friendId) {
+      if (!confirm('정말 친구를 삭제하시겠습니까?')) {
+        return;
+      }
+
+      fetch(`/friend/delete/${friendId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(function(response) {
+        return response.json().then(function(data) {
+          if (!response.ok) {
+            throw new Error(data.message || '친구 요청에 실패했습니다.');
+          }
+          return data;
+        });
+      })
+      .then(function(data) {
+        alert(data.message);
+        // 해당 친구를 목록에서 제거
+        const button = document.querySelector(`button.button-delete[onclick="deleteFriend(${friendId})"]`);
+        if (button) {
+          button.parentElement.remove();
+        }
+        location.reload();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert(error.message || '친구 삭제에 실패했습니다.');
+      });
+    };
+  </script>
+</head>
+<div layout:fragment="mainContent" class="fontQnsvlf">
+  <div class="flex">
+    <div class="myPageLeft">
+      <h2 class="textCenter">마이페이지</h2>
+      <div>
+        <ul class="myPageNav">
+          <li>
+            <a href="/myPage/info">
+              <span>내 정보</span>
+            </a>
+          </li>
+          <li>
+            <a href="/myPage/followList">
+              <span>친구 요청</span>
+            </a>
+          </li>
+          <li>
+            <a href="/myPage/friend">
+              <span class="here">친구 목록</span>
+            </a>
+          </li>
+          <li>
+            <a href="/message/list">
+              <span>쪽지 목록</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="myPageRight">
+
+      <div class="people-container">
+        <div class="header">
+          <p>친구 목록 리스트</p>
+        </div>
+        <form action="/myPage/friend" class="search-form">
+          <input
+                  type="text"
+                  class="search-input"
+                  maxlength="100"
+                  name="searchValue"
+                  id="searchValue"
+                  th:value="${pageDTO.searchValue}"
+                  placeholder="검색어를 입력하세요">
+          <input class="search-btn" type="submit" value="검색">
+        </form>
+
+        <div style="min-height: 390px;">
+          <!-- Example person card -->
+          <div class="person-card" th:each="friend, status : ${pageDTO.dtoList}">
+              <span class="name" th:text="${friend.othersId + ' (' + friend.othersName + ')'}"></span>
+              <span class="name" th:if="${friend.status == 0}">수락 대기중</span>
+              <span class="name" th:if="${friend.status == 1}"></span>
+            <button type="button" class="button button-delete" th:onclick="'deleteFriend(' + ${friend.friendId} + ')'">친구 삭제</button>
+          </div>
+          <!-- 한 페이지에 7명씩 -->
+        </div>
+        <div class="pagination">
+          <!-- 이전 버튼 -->
+          <button
+                  class="page-btn"
+                  th:if="${pageDTO.prev}"
+                  th:data-num="${pageDTO.blockStart - 1}">&lt;
+          </button>
+
+          <!-- 페이지 번호 버튼 -->
+          <th:block th:each="i:${#numbers.sequence(pageDTO.blockStart, pageDTO.blockEnd)}">
+            <button
+                    th:class="${pageDTO.pageNo == i} ? 'page-btn active' :'page-btn'"
+                    th:data-num="${i}">[[${i}]]
+            </button>
+          </th:block>
+
+          <!-- 다음 버튼 -->
+          <button
+                  class="page-btn"
+                  th:if="${pageDTO.next}"
+                  th:data-num="${pageDTO.blockEnd + 1}">&gt;
+          </button>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+  <script th:inline="javascript">
+    let pageBtn = document.querySelectorAll(".page-btn");
+
+    for(let i of pageBtn){
+      i.addEventListener("click",(e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+        const num = e.target.getAttribute("data-num");
+        const formObj = document.querySelector("form");
+        formObj.innerHTML += `<input type='hidden' name='pageNo' value='${num}'>`;
+        formObj.submit();
+      });
+    }
+  </script>
+</div>
+
+</html>

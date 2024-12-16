@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{main/layout.html}"
+>
+<head>
+    <link th:href="@{/assets/css/myPage/myPage.css}" rel="stylesheet" />
+    <style>
+        /* 전체 body 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F3CD99;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 페이지 제목 스타일 */
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            /*border: 1px solid #ddd;*/
+        }
+
+        th {
+            background-color: seagreen;
+            color: white;
+            font-size: 16px;
+        }
+
+        td {
+            background-color: #f9f9f9;
+            color: black;
+            /*font-weight: bold;*/
+        }
+
+        td a {
+            text-decoration: none;
+            /*color: black;*/
+            color: #28a745;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .send-button, .delete-button {
+            color: white;
+            background-color: seagreen;
+            font-size: 14px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+        }
+
+        .send-button:hover, .delete-button:hover {
+            background-color: #218838;
+        }
+
+        .no-messages {
+            color: white;
+            font-size: 18px;
+            margin-top: 30%;
+            text-align: center;
+        }
+
+        form {
+            width: 99%;
+            max-width: 1000px;
+            /*원래는 bottom:30px이니까 잘못되면 고치고 탑 삭제*/
+            margin-bottom: 75px;
+            margin-top: -45px;
+            height: 450px;
+            max-height: 450px;
+        }
+
+        .delete-button {
+            float: left;
+            background-color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+        }
+
+        /* 네비게이션 버튼 */
+        .navigation-buttons {
+            display: flex;
+            justify-content: center; /* 버튼 사이의 간격을 자동으로 조정 */
+            width: 100%;
+            max-width: 1000px;
+            /*gap: 390px;*/
+        }
+
+        /* 페이징 스타일 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #007bff;
+        }
+
+        .pagination a:hover {
+            background-color: #e9ecef;
+        }
+
+        .pagination .current {
+            background-color: #007bff;
+            color: white;
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="mainContent" class="fontQnsvlf">
+    <div class="flex">
+        <div class="myPageLeft">
+            <h2 class="textCenter">마이페이지</h2>
+            <div>
+                <ul class="myPageNav">
+                    <li>
+                        <a href="/myPage/info">
+                            <span>내 정보</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/myPage/followList">
+                            <span>친구 요청</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/myPage/friend">
+                            <span>친구 목록</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/message/list">
+                            <span class="here">쪽지 목록</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="myPageRight">
+            <h1>받은 쪽지 목록</h1>
+
+            <div th:if="${#lists.isEmpty(pageDTO.dtoList)}" class="no-messages">
+                <p>받은 쪽지가 없습니다.</p>
+<!--                <button type="submit">삭제</button>-->
+            </div>
+
+            <div th:unless="${#lists.isEmpty(pageDTO.dtoList)}">
+                <form method="post" th:action="@{/message/delete}" onsubmit="return validateForm()">
+                    <button type="submit" class="delete-button">삭제</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="selectAll" onclick="toggleSelectAll()"/>
+                            </th>
+                            <th>번호</th>
+                            <th>보낸사람</th>
+                            <th>제목</th>
+                            <th>날짜</th>
+                            <th>읽음 여부</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="message, iterStat : ${pageDTO.dtoList}">
+                            <td class="checkbox-container">
+                                <input type="checkbox" name="messageIds" th:value="${message.id}" class="messageCheckbox"/>
+                            </td>
+                            <td><a th:href="@{/message/view(messageId=${message.id})}" th:text="${iterStat.index + pageDTO.offset + 1}"></a></td>
+                            <td th:text="${message.senderId}"></td>
+                            <td><a th:href="@{/message/view(messageId=${message.id})}" th:text="${message.title}"></a></td>
+                            <td th:text="${#temporals.format(message.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td th:text="${message.isRead ? '읽음' : '안 읽음'}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <!-- 네비게이션 버튼 -->
+            <div class="navigation-buttons">
+                <button type="button" class="send-button" onclick="window.location.href='/message/send/list';">보낸쪽지목록</button>
+                <!--                <button type="button" onclick="window.location.href='/message/regist';">쪽지 쓰기</button>-->
+            </div>
+            <!-- 페이징 -->
+            <div class="pagination">
+                <span th:if="${pageDTO.prev}">
+                    <a th:href="@{/message/list(page=${pageDTO.blockStart - 1}, size=${size})}">이전</a>
+                </span>
+
+                <span th:each="i : ${#numbers.sequence(pageDTO.blockStart - 1, pageDTO.blockEnd - 1)}">
+                    <a th:href="@{/message/list(page=${i + 1}, size=${size})}" th:text="${i + 1}" th:classappend="${i == currentPage} ? 'current' : ''"></a>
+                </span>
+
+                <span th:if="${pageDTO.next}">
+                    <a th:href="@{/message/list(page=${pageDTO.blockEnd + 1}, size=${size})}">다음</a>
+                </span>
+            </div>
+        </div>
+            <script>
+                // 기존 체크박스 함수
+                function toggleSelectAll() {
+                    const selectAllCheckbox = document.getElementById('selectAll');
+                    const checkboxes = document.querySelectorAll('.messageCheckbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                }
+
+                function validateForm(){
+                    const selectMessages = document.querySelectorAll('.messageCheckbox:checked');
+                    if(selectMessages.length === 0){
+                        alert('삭제할 쪽지를 선택해주세요.');
+                        return false;
+                    }
+                    return true;
+                }
+            </script>
+    </div>
+</div>
+</body>
+</html>

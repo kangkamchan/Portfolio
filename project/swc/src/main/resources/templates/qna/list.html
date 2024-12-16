@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QnA 리스트</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .reply {
+            margin-left: 20px;
+            color: gray;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>QnA 리스트</h1>
+    <a href="/" class="btn btn-primary mb-3">돌아가기</a>
+    <a href="/qna/regist" class="btn btn-primary mb-3 float-end">글 작성</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>이메일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="qna : ${qnaPage}">
+            <td th:text="${qna.qnaId}"></td>
+            <td>
+                <!-- 비밀번호 입력 모달을 여는 링크로 변경 -->
+                <a href="#"
+                   th:attr="data-qna-id=${qna.qnaId}"
+                   class="open-password-modal"
+                   th:text="${qna.title}"
+                   style="text-decoration: none; color: inherit; cursor: pointer;">
+                </a>
+                <div th:if="${qna.replies.size() > 0}" class="reply">
+                    <span th:each="reply : ${qna.replies}" th:text="'ㄴ ' + ${reply.title} "></span>
+                </div>
+            </td>
+            <td>
+                <span th:text="${qna.email != null and #strings.contains(qna.email, '@') ?
+                        (#strings.length(qna.email) > 3 ?
+                         #strings.substring(qna.email,0,3) + '**' +
+                         #strings.substring(qna.email, #strings.indexOf(qna.email, '@')): qna.email): ''}">
+                </span>
+            </td>
+        </tr>
+        <tr th:if="${qnaPage == null}">
+            <td colspan="3">해당하는 qna가 없습니다</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- 페이징 네비게이션 -->
+<nav th:if="${qnaPage.totalPages >= 1}" aria-label="QnA 리스트 페이지 네비게이션">
+    <ul class="pagination justify-content-center">
+        <!-- 이전 페이지 링크 -->
+        <li class="page-item" th:classappend="${qnaPage.first} ? 'disabled'">
+            <a class="page-link" th:href="@{/qna/list(page=${qnaPage.number - 1}, size=${qnaPage.size}, answered=${answered})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+
+        <!-- 페이지 번호 링크 -->
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, qnaPage.totalPages - 1)}"
+            th:classappend="${i == qnaPage.number} ? 'active'">
+            <a class="page-link" th:href="@{/qna/list(page=${i}, size=${qnaPage.size}, answered=${answered})}"
+               th:text="${i + 1}">페이지 번호</a>
+        </li>
+
+        <!-- 다음 페이지 링크 -->
+        <li class="page-item" th:classappend="${qnaPage.last} ? 'disabled'">
+            <a class="page-link" th:href="@{/qna/list(page=${qnaPage.number + 1}, size=${qnaPage.size}, answered=${answered})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- 비밀번호 입력 모달 -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="passwordForm" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">비밀번호 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">비밀번호:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="alert alert-danger d-none" id="passwordError">
+                        비밀번호가 일치하지 않습니다.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="submit" class="btn btn-primary">확인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS 및 의존성 스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery (선택 사항: Bootstrap 5는 jQuery 의존성이 없지만, 편의성을 위해 사용 가능) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.open-password-modal').on('click', function(event) {
+            event.preventDefault();
+            var qnaId = $(this).data('qna-id');
+            console.log("Clicked QnA ID:", qnaId);
+            $('#passwordError').addClass('d-none');
+            $('#passwordForm').attr('action', '/qna/view/' + qnaId + '/password');
+            console.log("Form action set to:", $('#passwordForm').attr('action'));
+            var passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+            passwordModal.show();
+        });
+
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('view')) {
+            var qnaId = urlParams.get('view');
+            console.log("URL view param QnA ID:", qnaId);
+            if (qnaId) {
+                if (urlParams.get('error') === 'password') {
+                    $('#passwordError').removeClass('d-none');
+                } else {
+                    $('#passwordError').addClass('d-none');
+                }
+                // 폼의 action을 설정
+                $('#passwordForm').attr('action', '/qna/view/' + qnaId + '/password');
+                var passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+                passwordModal.show();
+            }
+        }
+    });
+</script>
+</body>
+</html>

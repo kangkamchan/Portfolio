@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{main/layout.html}"
+>
+  <head>
+    <link th:href="@{/assets/css/main/main.css}" rel="stylesheet" />
+  </head>
+
+  <div layout:fragment="mainContent" class="fontQnsvlf">
+    <div class="flex">
+      <section class="content1">
+        <div>
+
+
+
+          <h3 style="text-align: center; margin-top: 15px">프로필</h3>
+          <aside class="shared-learning">
+            <div class="thumbnail-group center">
+              <img
+                th:src="${profileImage?.getPath()?: '/assets/public/human.png'}"
+                alt="Thumbnail"
+              />
+            </div>
+            <button class="profileImgEdit" onclick="openProfileModal()">
+              Edit
+            </button>
+            <div
+              class="likes"
+              th:text="${memberDTO.name + '님'}"
+              style="text-align: center; margin-top: 10px"
+            ></div>
+            <div>
+              <button
+                class="button"
+                th:data-member-id="${memberDTO.memberId}"
+                onclick="handleFriendRequest(this)"
+              >
+                <img
+                  th:src="@{/assets/public/followIcon.png}"
+                  alt="friendPlus"
+                  width="15px"
+                />
+                친구 추가
+              </button>
+              <button
+                class="button"
+                th:data-member-id="${memberDTO.memberId}"
+                onclick="sendMessage(this)"
+              >
+                ✉️ 쪽지 보내기
+              </button>
+              <div>
+                <div th:replace="~{/message/modal.html}"></div>
+<!--                <script>-->
+<!--                  function sendMessage(button) {-->
+<!--                    var receiverId = button.getAttribute("data-member-id");-->
+<!--                    if (!receiverId) {-->
+<!--                      alert("받는 사람의 ID가 없습니다.");-->
+<!--                      return;-->
+<!--                    }-->
+<!--                    window.location.href =-->
+<!--                      "/message/regist?receiverId=" + receiverId;-->
+<!--                  }-->
+<!--                </script>-->
+              </div>
+              <button class="button" id="registBtn">📝 학습 등록</button>
+              <div>
+                <script>
+                  const registBtn = document.getElementById("registBtn");
+                  registBtn.addEventListener("click", () => {
+                    location.href = "/post/register";
+                  });
+                </script>
+              </div>
+            </div>
+            <div class="studyDream center">
+              <div>
+                <p style="text-align: center">학습 목표</p>
+                <div
+                  class="center studyDreamContent"
+                  th:text="${memberDTO.myInfo}"
+                ></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="content2">
+        <h2>오늘의 학습</h2>
+        <section class="content3" style="margin-top: 20px">
+          <div class="weekday-container">
+            <button class="arrow up">▲</button>
+            <ul id="weekday-list" class="weekday-list">
+              <!-- Days will be dynamically injected here -->
+            </ul>
+            <button class="arrow down">▼</button>
+            <p id="today" style="font-size: 16px; text-align: center">
+              <b th:text="${month + '월 ' + date + '일'}"></b><br>
+              <span th:text="${'(' + month + '월,' + week +'주)'}"></span>
+            </p>
+          </div>
+          <div class="slider-container">
+            <div class="slider-wrapper">
+              <div class="slider" id="slider">
+                <article
+                  class="learning-card"
+                  th:if="${!postMainDTOList.isEmpty()}"
+                  th:each="post, status:${postMainDTOList}"
+                >
+                  <div class="thumbnail">
+                    <img
+                      th:src="${post.image == null ? '/upload/images/default_image.jpg' : post.image}"
+                      alt="Thumbnail"
+                    />
+                    <div class="category">
+                      <div class="tag-container">
+                        <strong>해시태그</strong>:
+                        <th:block th:each="tag,status:${post.hashtag}">
+                          <div
+                            class="tag-div"
+                            th:text="${tag}"
+                            th:data-tag="${tag}"
+                            th:onclick="'search(this);'"
+                          ></div>
+                        </th:block>
+                      </div>
+                    </div>
+                    <div class="thumbUps">
+                      ❤️ 좋아요 <span th:text="${post.thumbUps}"></span>
+                    </div>
+                  </div>
+                  <div class="info">
+                    <h3 class="title" th:text="${post.title}"></h3>
+                    <p class="description" th:utext="${post.content}"></p>
+                    <div class="shared-by">
+                      <strong>공유 목록</strong>
+                      <th:block th:each="share, status:${post.shares}">
+                        <div th:text="${share}"></div>
+                      </th:block>
+                    </div>
+                  </div>
+                </article>
+                <article
+                  class="learning-card"
+                  th:if="${postMainDTOList.isEmpty()}"
+                >
+                  <div class="info">
+                    <h3
+                      class="title"
+                      th:text="'등록된 오늘의학습이 없습니다.'"
+                    ></h3>
+                  </div>
+                </article>
+                <!-- 추가적으로 더 많은 <article> 요소를 등록 -->
+              </div>
+            </div>
+            <div class="slider-indicators">
+              <!-- Dots will be dynamically added here -->
+            </div>
+          </div>
+        </section>
+      </section>
+      <div>
+        <script th:inline="javascript">
+          let baseDate = new Date([[${createdAt}]]);
+          function search(element){
+            const tag = element.getAttribute("data-tag");
+            location.href="/post/sharelist?type=others&searchField=hashtag&searchValue="+tag.replace('#','');
+          }
+          //const memberId = [[${memberDTO.memberId}]];
+        </script>
+        <script
+          th:src="@{/assets/js/main.js}"
+          layout:fragment="mainscript"
+          th:inline="javascript"
+        ></script>
+      </div>
+      <!-- 프로필 사진 변경 모달 -->
+      <div id="profileModal">
+        <div class="modal-content">
+          <h3>프로필 사진 변경</h3>
+          <input
+            type="file"
+            id="profileFile"
+            accept="image/*"
+            onchange="previewImage(event)"
+          />
+          <img id="preview" />
+          <button onclick="saveProfileImage()">저장</button>
+          <button onclick="closeProfileModal()">취소</button>
+        </div>
+      </div>
+
+      <script>
+        function openProfileModal() {
+          document.getElementById("profileModal").style.display = "flex";
+        }
+
+        function closeProfileModal() {
+          document.getElementById("profileModal").style.display = "none";
+        }
+
+        function previewImage(event) {
+          const preview = document.getElementById("preview");
+          const file = event.target.files[0];
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+          };
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+
+        function saveProfileImage() {
+          const fileInput = document.getElementById("profileFile");
+          const formData = new FormData();
+          formData.append("file", fileInput.files[0]);
+
+          fetch("/myPage/update-profile-image", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("서버 응답 오류");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.success) {
+                alert("프로필 사진이 변경되었습니다.");
+                closeProfileModal();
+                location.reload();
+              } else {
+                alert("프로필 사진 변경에 실패했습니다.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("변경 중 오류가 발생했습니다.");
+            });
+        }
+      </script>
+    </div>
+  </div>
+</html>

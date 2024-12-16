@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #chatRoomListContainer {
+            width: 600px;
+            margin: 0 auto;
+        }
+
+        #chatContainer {
+            width: 600px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        #messages {
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            margin-left: 10px;
+        }
+
+        #chatRoomList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #chatRoomList li {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>채팅</h1>
+
+<div id="chatRoomListContainer">
+    <h2>채팅 목록</h2>
+    <ul id="chatRoomList">
+        <!-- 채팅 목록 -->
+    </ul>
+</div>
+
+<div id="chatContainer">
+    <h2>채팅방</h2>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." />
+    <button onclick="sendMessage()">보내기</button>
+    <button onclick="goBackToChatRoomList()">채팅 목록으로 돌아가기</button>
+</div>
+
+<script>
+    let socket;
+    let currentChatRoomId = null;
+    let currentReceiverId = null;
+
+    // WebSocket 연결
+    function connectToChat(receiverId) {
+        if (socket) {
+            socket.close();
+        }
+        currentReceiverId = receiverId;
+        socket = new WebSocket('ws://localhost:8080/chat'); // url맞나
+
+        socket.onopen = function() {
+            console.log("WebSocket 연결 성공");
+            document.getElementById('chatContainer').style.display = 'block';
+            document.getElementById('chatRoomListContainer').style.display = 'none';
+            loadMessages();
+        };
+
+        socket.onmessage = function(event) {
+            const message = event.data;
+            const messagesDiv = document.getElementById("messages");
+            const messageElement = document.createElement("div");
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        };
+
+        socket.onclose = function() {
+            console.log("WebSocket 연결 종료");
+        };
+
+        socket.onerror = function(error) {
+            console.error("WebSocket 오류:", error);
+        };
+    }
+
+    // 메시지 전송
+    function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value;
+        if (message) {
+            const payload = currentReceiverId + ":" + message;
+            socket.send(payload);
+            messageInput.value = "";
+        }
+    }
+
+    // 채팅방 목록
+    function loadChatRoomList() {
+        const chatRoomList = document.getElementById("chatRoomList");
+        // 예시니까 지워
+        const chatRooms = ['user2', 'user3','sk'];
+        chatRoomList.innerHTML = '';
+        chatRooms.forEach(room => {
+            const listItem = document.createElement("li");
+            listItem.textContent = room;
+            listItem.onclick = function() {
+                connectToChat(room);
+            };
+            chatRoomList.appendChild(listItem);
+        });
+    }
+
+    // 채팅방 목록
+    function goBackToChatRoomList() {
+        document.getElementById('chatRoomListContainer').style.display = 'block';
+        document.getElementById('chatContainer').style.display = 'none';
+    }
+
+    window.onload = function() {
+        loadChatRoomList();
+    };
+</script>
+</body>
+</html>

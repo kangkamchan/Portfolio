@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{main/layout.html}"
+>
+<head>
+  <link th:href="@{/assets/css/myPage/myPage.css}" rel="stylesheet" />
+  <link th:href="@{/assets/css/myPage/myPageFriend.css}" rel="stylesheet" />
+</head>
+<div layout:fragment="mainContent" class="fontQnsvlf">
+  <div class="flex">
+    <div class="myPageLeft">
+      <h2 class="textCenter">마이페이지</h2>
+      <div>
+        <ul class="myPageNav">
+          <li>
+            <a href="/myPage/info">
+              <span>내 정보</span>
+            </a>
+          </li>
+          <li>
+            <a href="/myPage/followList">
+              <span  class="here">친구 요청</span>
+            </a>
+          </li>
+          <li>
+            <a href="/myPage/friend">
+              <span>친구 목록</span>
+            </a>
+          </li>
+          <li>
+            <a href="/message/list">
+              <span>쪽지 목록</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="myPageRight">
+
+
+      <div class="people-container">
+        <div class="header">
+          <p>친구 요청 리스트</p>
+        </div>
+        <form action="/myPage/followList" class="search-form">
+          <input type="text" class="search-input" th:maxlength="100" name="searchValue" id="searchValue" th:value="${pageDTO?.searchValue}">
+          <input class="search-btn" type="submit" value="검색">
+        </form>
+
+
+        <div style="min-height: 420px;">
+
+          <!-- Example person card -->
+          <div class="person-card" th:each="request, status : ${pageDTO.dtoList}">
+            <span class="name" th:text="${request.othersId} + ' (' + ${request.othersName} + ')' "></span>
+            <div class="actions">
+              <button type="button" class="confirm-btn" th:data-idx="${request.friendId}" th:onclick="'acceptFriendRequest(this)'">수락</button>
+              <button type="button" class="delete-btn2" th:data-idx="${request.friendId}" th:onclick="'rejectFriendRequest(this)'">거절</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="pagination">
+          <button class="page-btn" th:if="${pageDTO.prev}" th:data-num="${pageDTO.blockStart - 1}">&lt;</button>
+          <th:block th:each="i:${#numbers.sequence(pageDTO.blockStart, pageDTO.blockEnd)}">
+            <button th:class="${pageDTO.pageNo == i} ? 'page-btn active' :'page-btn'" th:data-num="${i}">[[${i}]]</button>
+          </th:block>
+          <button class="page-btn" th:if="${pageDTO.next}" th:data-num="${pageDTO.blockEnd + 1}">&gt;</button>
+        </div>
+
+      </div>
+
+      <script th:src="@{/assets/js/friend.js}"></script>
+      <script th:inline="javascript">
+        let pageBtn = document.querySelectorAll(".page-btn");
+
+        for(let i of pageBtn){
+          i.addEventListener("click",(e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            const num = e.target.getAttribute("data-num");
+            const formObj = document.querySelector("form");
+            formObj.innerHTML += `<input type='hidden' name='pageNo' value='${num}'>`;
+            formObj.submit();
+          });
+        }
+      </script>
+    </div>
+  </div>
+</div>
+<div>
+
+</div>
+</html>

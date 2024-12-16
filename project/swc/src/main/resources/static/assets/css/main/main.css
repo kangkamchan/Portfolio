@@ -1,0 +1,453 @@
+.calendar {
+  width: 150px;
+  float: left;
+  margin-top: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.calendar .month button {
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  height: 80px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.calendar .today {
+  background-color: #007bff;
+  color: white;
+}
+
+.learning-card {
+  border-radius: 8px;
+  padding: 0;
+  width: 500px;
+  margin: 10px;
+  display: flex;
+  background-color: white;
+  float: left;
+  height: 500px;
+}
+
+.thumbnail {
+  width: 250px;
+  height: 470px;
+  margin-left: 13px;
+  background: rgba(145, 135, 135, 0.06);
+  border-radius: 8px;
+}
+
+.thumbnail img {
+  width: 250px;
+  height: 350px;
+}
+
+.info {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+.title {
+  font-size: 18px;
+  margin: 10px;
+}
+
+.info {
+  font-size: 14px;
+  color: #555;
+  padding: 10px;
+  margin: 5px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  height: 274px;
+  width: 290px;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: rgba(133, 129, 129, 0.06);
+}
+
+.info .tags {
+  font-size: 12px;
+  color: #999;
+  margin: 10px 0;
+}
+
+.info .shared-by {
+  font-size: 12px;
+  color: #000;
+  margin: 15px;
+}
+
+.info .likes {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+}
+
+.shared-learning .thumbnail-group img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #ddd;
+  display: inline-block;
+  border: 1px solid white;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.pagination span {
+  margin: 0 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.weekday-container {
+  width: 150px;
+  height: 500px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: black;
+  margin-left: 20px;
+}
+.arrow {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 10px;
+}
+.weekday-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.weekday-list li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  position: relative;
+}
+
+.weekday-list li:hover {
+  background-color: #f1f1f1;
+}
+
+.today {
+  background-color: #e8f4fc;
+  font-weight: bold;
+}
+
+.today .calendar-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.calendar-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+#date-picker {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+#close-calendar {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button {
+  background-color: transparent;
+  border: 1px dotted white;
+  color: white;
+  padding: 3px;
+  border-radius: 3px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.slider-container {
+  position: relative;
+  width: 600px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.slider-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.learning-card {
+  flex: 0 0 600px;
+  margin: 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail img {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+}
+
+.info {
+  padding: 10px;
+}
+
+/* Indicator styles */
+.slider-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.slider-indicators .indicator {
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.slider-indicators .indicator.active {
+  background-color: #007bff; /* Highlight color for active slide */
+}
+
+.styled-date {
+  appearance: none;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  color: #555;
+  background-color: #fff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.styled-date:hover {
+  border-color: #888;
+}
+
+.styled-date:focus {
+  border-color: #0fbc8c;
+  box-shadow: 0 0 5px rgba(15, 188, 140, 0.5);
+}
+
+.styled-date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+}
+
+.content1 {
+  width: 200px;
+  height: 600px;
+  margin-top: 30px;
+  margin-left: 20px;
+  border-radius: 15px;
+  color: white;
+  border: 3px dotted white;
+  display: flex;
+  justify-content: center;
+}
+
+.content2 {
+  width: 820px;
+  height: 600px;
+  border-radius: 15px;
+  border: 3px dotted white;
+  margin-top: 30px;
+  margin-left: 15px;
+  padding-left: 10px;
+  color: white;
+}
+
+.content3 {
+  border-radius: 15px;
+  display: flex;
+}
+
+.flex {
+  display: flex;
+}
+
+.fontQnsvlf {
+  font-family: "HakgyoansimBunpilR";
+}
+
+.studyDream {
+  margin-top: 20px;
+}
+
+.studyDreamContent {
+  align-items: center;
+  width: 150px;
+  border: 1px dashed white;
+  height: 150px;
+  padding: 5px;
+}
+.category {
+  color: black;
+  margin: 20px;
+}
+
+.thumbUps {
+  color: black;
+  margin: 20px;
+}
+
+.profileImgEdit {
+  background-color: transparent;
+  outline: none;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  bottom: 10px;
+  left: 150px;
+  border: 1px solid white;
+  transition: all 0.3s ease;
+}
+
+.profileImgEdit:active {
+  transform: scale(0.95);
+}
+
+#profileModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content h3 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+#profileFile {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#preview {
+  display: none;
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0fbc8c;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content button {
+  padding: 10px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modal-content button:first-of-type {
+  background-color: #0fbc8c;
+  color: white;
+}
+
+.modal-content button:last-of-type {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.modal-content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content button:active {
+  transform: translateY(0);
+}
+.post-date.selected{
+  background-color: rgba(0,123,255,0.3);
+  font-weight: bold;
+}

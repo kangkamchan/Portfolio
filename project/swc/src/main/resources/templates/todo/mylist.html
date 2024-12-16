@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{main/layout.html}"
+>
+<head>
+    <style>
+
+        .content2 {
+            width: 1000px;
+            margin: 30px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255);
+            height: 600px;
+            border-radius: 8px;
+            color: black;
+            border: 3px dotted white;
+        }
+
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .date-input {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-input {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .search-btn {
+            padding: 5px 15px;
+            background-color: seagreen;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background-color: darkgreen;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        thead th {
+            background-color: #f5f5f5;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            color: #fff;
+            background-color: #FF5722;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .new-badge {
+            display: inline-block;
+            margin-left: 5px;
+            padding: 2px 6px;
+            color: #fff;
+            background-color: #007BFF;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .page-btn.active {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+         .page-btn {
+            padding: 5px 10px;
+            background-color: #fff;
+            color: #007BFF;
+            border: 1px solid #007BFF;
+            border-radius: 4px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .pagination button:hover {
+            background-color: #0056b3;
+        }
+
+        .page-number {
+            padding: 5px 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        .button-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .sort-btn {
+            padding: 5px 15px;
+            border: 1px solid #007BFF;
+            background-color: #fff;
+            color: #007BFF;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .sort-btn.active {
+            padding: 5px 15px;
+            border: 1px solid #007BFF;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .sort-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .view-count-select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+
+<div layout:fragment="mainContent">
+        <div class="content2">
+                <h1>나의 학습</h1>
+            <form action="/post/list" method="get">
+                <!-- Date and Search Filter -->
+                <div class="filter-section">
+                    <input type="date" name="searchDateBegin" id="searchDateBegin" class="date-input" th:value="${pageDTO.searchDateBegin}">
+                    <span>~</span>
+                    <input type="date" name="searchDateEnd" id="searchDateEnd" class="date-input" th:value="${pageDTO.searchDateEnd}">
+                    <select class="view-count-select" name="searchField" id="searchField">
+                        <option value="">검색조건</option>
+                        <option value="title" th:selected="${pageDTO.searchField == 'title'}">제목</option>
+                        <option value="content" th:selected="${pageDTO.searchField == 'content'}">내용</option>
+                    </select>
+                    <input type="text" class="search-input" th:maxlength="100" name="searchValue" id="searchValue" th:value="${pageDTO.searchValue}">
+                    <input class="search-btn" id="btnSubmit" type="submit" value="검색">
+                </div>
+
+                <div class="button-section">
+                    <th:block th:if="${pageDTO.sortField == 'createdAt'}">
+                        <button th:id="'sortCreatedAt'" class="sort-btn active" th:text="${pageDTO.sortDirection == 'desc'?'등록순↓':'등록순↑'}"></button>
+                        <button class="sort-btn" th:id="'sortThumbUp'">좋아요순</button>
+                    </th:block>
+                    <th:block th:if="${pageDTO.sortField != 'createdAt'}">
+                        <button th:id="'sortCreatedAt'" class="sort-btn">등록순</button>
+                        <button class="sort-btn active" th:id="sortThumbUp" th:text="${pageDTO.sortDirection == 'desc'?'좋아요순↓':'좋아요순↑'}">좋아요순</button>
+                    </th:block>
+                    <input type="hidden" id="sortField" name="sortField" th:value="${pageDTO.sortField}" >
+                    <input type = "hidden" id="sortDirection" name="sortDirection" th:value="${pageDTO.sortDirection}">
+                    <input type = "hidden" id="pageNo" name="pageNo" th:value = "${pageDTO.pageNo}">
+                    <select name="pageSize" id="pageSize" class="view-count-select">
+                        <option value="5" th:selected="${pageDTO.pageSize == 5}">5개씩보기</option>
+                        <option value="10" th:selected="${pageDTO.pageSize == 10}">10개씩보기</option>
+                        <option value="30" th:selected="${pageDTO.pageSize == 30}">30개씩보기</option>
+                        <option value="50" th:selected="${pageDTO.pageSize == 50}">50개씩보기</option>
+                    </select>
+                </div>
+            </form>
+                <!-- Notice Table -->
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>등록일</th>
+                        <th>좋아요</th>
+                        <th>오늘의 학습 노출 여부</th>
+                        <th>오늘의 학습 노출 기간</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${pageDTO.dtoList == null}">
+                        <td colspan="6">
+                            작성된 학습이 존재하지 않습니다.
+                        </td>
+                    </tr>
+                    <tr th:if="${pageDTO.dtoList != null}" th:each="post, status:${pageDTO.dtoList}" th:onclick="'view('+${post.postId}+');'">
+                        <td th:text="${post.postId}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${#temporals.format(post.createdAt,'yyyy-MM-dd')}"></td>
+                        <td th:text="${post.thumbUpCount}"></td>
+                        <td th:text="${post.todayType == 1 ? 'Y' : 'N'}"></td>
+                        <td th:text="${#temporals.format(post.displayAt,'yyyy-MM-dd') + ' ~ ' + #temporals.format(post.displayEnd,'yyyy-MM-dd')}"></td>
+                    </tr>
+                    <!-- Additional rows as needed -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="page-btn" th:if="${pageDTO.prev}" th:data-num="${pageDTO.blockStart - 1}">&lt;</button>
+                    <th:block th:each="i:${#numbers.sequence(pageDTO.blockStart, pageDTO.blockEnd)}">
+                        <button th:class="${pageDTO.pageNo == i} ? 'page-btn active' :'page-btn'" th:data-num="${i}">[[${i}]]</button>
+                    </th:block>
+                    <button class="page-btn" th:if="${pageDTO.next}" th:data-num="${pageDTO.blockEnd + 1}">&gt;</button>
+                </div>
+                <script th:inline="javascript">
+                    const formObj = document.querySelector("form");
+                    const btnSubmit = document.querySelector("#btnSubmit");
+                    let pageBtn = document.querySelectorAll(".page-btn");
+                    function formSubmit(formElement){
+                        searchValid(formElement);
+                        formElement.submit();
+                    }
+                    function searchValid(formElement){
+                        const ALLOWED_CONST_OBJ = {
+                            ALLOWED_SEARCH_FIELD : ["title","content"],
+                            ALLOWED_SORT_FIELD : ["createdAt","thumbUps"],
+                            ALLOWED_SORT_DIRECTION : ["desc","asc"],
+                            ALLOWED_PAGE_SIZE : [5,10,30,50],
+                            DEFAULT_SEARCH_FIELD : "title",
+                            DEFAULT_SORT_FIELD : "createdAt",
+                            DEFAULT_SORT_DIRECTION : "desc",
+                            DEFAULT_PAGE_SIZE : 10
+                        };
+                        const searchField = formElement.searchField;
+                        const searchValue = formElement.searchValue;
+                        const searchDateBegin = formElement.searchDateBegin;
+                        const searchDateEnd = formElement.searchDateEnd;
+                        const sortField = formElement.sortField;
+                        const sortDirection = formElement.sortDirection;
+                        const pageSize = formElement.pageSize;
+                        const pageNo = formElement.pageNo;
+                        if(ALLOWED_CONST_OBJ.ALLOWED_SEARCH_FIELD.indexOf(searchField.value)<0){
+                            searchField.value = ALLOWED_CONST_OBJ.DEFAULT_SEARCH_FIELD;
+                        }
+                        if(ALLOWED_CONST_OBJ.ALLOWED_SORT_FIELD.indexOf(sortField.value)<0){
+                            sortField.value = ALLOWED_CONST_OBJ.DEFAULT_SORT_FIELD;
+                        }
+                        if(ALLOWED_CONST_OBJ.ALLOWED_SORT_DIRECTION.indexOf(sortDirection.value)<0){
+                            sortDirection.value = ALLOWED_CONST_OBJ.DEFAULT_SORT_DIRECTION;
+                        }
+                        if(ALLOWED_CONST_OBJ.ALLOWED_PAGE_SIZE.indexOf(pageSize.value)<0){
+                            pageSize.value = ALLOWED_CONST_OBJ.DEFAULT_PAGE_SIZE;
+                        }
+                        if(searchValue.value.length>100){
+                            searchValue.value = searchValue.value.substring(0,99);
+                        }
+                        if(searchDateBegin.value > searchDateEnd.value){
+                            const temp = searchDateEnd.value;
+                            searchDateEnd.value = searchDateBegin.value;
+                            searchDateBegin.value = temp;
+                        }
+                        if(pageNo.value < 0){
+                            pageNo.value = 1;
+                        }
+                        if(isNaN(Number(pageNo.value))){
+                            pageNo.value = 1;
+                        }
+                    }
+
+                    for(let i of pageBtn){
+                        i.addEventListener("click",(e)=>{
+                            e.preventDefault();
+                            e.stopPropagation();
+                            formObj.pageNo.value = e.target.getAttribute("data-num");
+                            formSubmit(formObj);
+                        });
+                    }
+                    const queryString = [[@{${pageDTO.queryString}}]];
+                    function view(postId){
+                        location.href="/post/view?postId="+postId + `&queryString=${queryString}`;
+                    }
+                    const sortCreatedAt = document.querySelector("#sortCreatedAt");
+                    const sortThumbUp = document.querySelector("#sortThumbUp");
+                    const sortField = document.querySelector("#sortField");
+                    const sortDirection = document.querySelector("#sortDirection");
+                    sortCreatedAt.addEventListener("click",(e)=>{
+                        e.stopPropagation();
+                        e.preventDefault();
+                       sortField.value="createdAt";
+                       if(sortDirection.value==='desc'){
+                           sortDirection.value = 'asc';
+                       }else{
+                            sortDirection.value = 'desc';
+                       }
+                       formObj.pageNo.value=1;
+                       formSubmit(formObj);
+                    });
+                    sortThumbUp.addEventListener("click",(e)=>{
+                        e.stopPropagation();
+                        e.preventDefault();
+                        sortField.value="thumbUps";
+                        if(sortDirection.value==='desc'){
+                            sortDirection.value = 'asc';
+                        }else{
+                            sortDirection.value = 'desc';
+                        }
+                        formObj.pageNo.value=1;
+                        formSubmit(formObj);
+                    });
+                    btnSubmit.addEventListener("click",(e)=>{
+                        e.preventDefault();
+                        e.stopPropagation();
+                        formSubmit(formObj);
+                    });
+                </script>
+            </div>
+</div>

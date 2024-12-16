@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+   <meta charset="UTF-8">
+   <title>Admin Dashboard</title>
+   <link rel="stylesheet" th:href="@{/assets/css/admin/styles.css}">
+   <script th:src="@{/js/scripts.js}"></script>
+</head>
+
+<body>
+<div class="wrapper">
+   <!-- Header -->
+   <header class="header">
+      <nav class="navbar">
+         <div class="navbar-brand">SWC ADMIN</div>
+         <div class="navbar-links">
+            <a th:if="${session.admin == null}" href="/admin/login">Login</a>
+            <a th:if="${session.admin != null}" href="/admin/logout">Logout</a>
+         </div>
+      </nav>
+   </header>
+
+   <!-- Sidebar -->
+   <aside class="sidebar">
+      <ul class="sidebar-menu">
+<!--         <li><a href="/admin/dashboard">Dashboard</a></li>-->
+         <li><a href="/admin/memberList">회원관리</a></li>
+<!--         <li><a href="/admin/bbsList">게시글관리</a></li>-->
+         <li><a href="/admin/qnaList">QnA관리</a></li>
+      </ul>
+   </aside>
+
+   <!-- Main Content -->
+   <main class="main-content">
+      <div layout:fragment="admincontent"></div>
+   </main>
+</div>
+</body>
+</html>

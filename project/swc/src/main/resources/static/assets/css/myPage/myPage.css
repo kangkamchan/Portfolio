@@ -1,0 +1,116 @@
+.flex {
+  display: flex;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.fontQnsvlf {
+  font-family: "HakgyoansimBunpilR";
+  color: white;
+}
+
+.myPageContainer {
+  display: flex;
+}
+
+.myPageLeft {
+  width: 200px;
+  height: 600px;
+  margin-top: 30px;
+  margin-left: 20px;
+  border-radius: 15px;
+  color: white;
+  border: 3px dotted white;
+}
+
+.myPageRight {
+  width: 820px;
+  height: 600px;
+  border-radius: 15px;
+  border: 3px dotted white;
+  margin-top: 30px;
+  margin-left: 15px;
+  padding-left: 15px;
+  color: white;
+}
+
+.myPageNav {
+  text-decoration: none;
+  list-style: none;
+  text-align: left;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.myPageNav li {
+  margin-bottom: 10px;
+}
+
+.myPageNav li a {
+  text-decoration: none;
+  color: white;
+  line-height: 1.5;
+}
+
+.here {
+  font-weight: bolder;
+  text-decoration: underline;
+  color: #ffd700;
+}
+
+.myInfoIntroduce {
+  width: 500px;
+}
+
+.introduceItem {
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.introduceItem button {
+  border: none;
+  color: white;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: "HakgyoansimBunpilR";
+}
+
+.byeBtn {
+  border: none;
+  color: white;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: "HakgyoansimBunpilR";
+}
+
+.timeArea {
+  margin-top: 100px;
+}
+
+#editMyInfo {
+  border: 3px dashed white;
+  width: 400px;
+  height: 200px;
+  outline: none;
+  resize: none;
+  padding: 10px;
+  background-color: transparent;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.introduceItem input {
+  background-color: transparent;
+  border: 2px dashed white;
+  outline: none;
+  color: white;
+}

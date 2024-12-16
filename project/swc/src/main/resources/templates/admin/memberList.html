@@ -1,0 +1,201 @@
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/admin/main.html}"
+>
+
+<div layout:fragment="admincontent">
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .reply {
+        margin-left: 20px;
+        color: gray;
+    }
+
+    /* 검색 폼 스타일 */
+    form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+    form select, form input[type="text"], form button {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    form button {
+        background-color: #f2f2f2;
+        color: black;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* 페이징 스타일 */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        text-decoration: none;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        color: #333;
+        background-color: #f9f9f9;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .pagination a:hover {
+        background-color: #333;
+        color: white;
+    }
+
+    .pagination span {
+        border-radius: 4px;
+        color: #888;
+    }
+
+    .pagination span.disabled {
+        pointer-events: none;
+        background-color: #eee;
+    }
+</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <h1>회원 리스트</h1>
+
+        <!-- 검색 폼 -->
+        <form action="/admin/memberList" method="get">
+            <select name="searchType">
+                <option value="memberId" th:selected="${searchType == 'memberId'}">아이디</option>
+                <option value="name" th:selected="${searchType == 'name'}">이름</option>
+                <option value="status" th:selected="${searchType == 'status'}">상태</option>
+            </select>
+            <input type="text" name="keyword" th:value="${keyword}">
+            <button type="submit">검색</button>
+        </form>
+
+        <!-- 회원 리스트 테이블 -->
+        <table border="1">
+            <thead>
+            <tr>
+                <th>회원 ID</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>상태</th>
+                <th>가입일</th>
+                <th>최종 로그인</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="member : ${memberPage.content}">
+                <td th:text="${member.memberId}"></td>
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.email}"></td>
+                <td>
+                <select th:data-member-id="${member.memberId}" th:value="${member.status}" class="status-dropdown">
+                    <option value="Y" th:selected="${member.status == 'Y'}">활성화</option>
+                    <option value="N" th:selected="${member.status == 'N'}">이용정지</option>
+                    <option value="O" th:selected="${member.status == 'O'}">휴면계정</option>
+                    <option value="P" th:selected="${member.status == 'P'}">비번오류</option>
+                    <option value="D" th:selected="${member.status == 'D'}">탈퇴</option>
+                </select>
+                </td>
+                <td th:text="${member.createdAt != null ? #temporals.format(member.createdAt, 'yyyy-MM-dd') : '-'}" style="text-align: center;"></td>
+                <td th:text="${member.lastLoginAt != null ? #temporals.format(member.lastLoginAt, 'yyyy-MM-dd') : '-'}" style="text-align: center;"></td>
+            </tr>
+            <tr th:if="${memberPage.content.size() == 0}">
+                <td colspan="6">해당하는 회원이 없습니다</td>
+            </tr>
+            </tbody>
+        </table>
+
+    <!-- 페이징 -->
+    <div th:if="${memberPage.totalPages >= 1}" class="pagination">
+        <!-- 이전 페이지 링크 -->
+        <span th:if="${memberPage.hasPrevious()}">
+            <a th:href="@{/admin/memberList(page=${memberPage.number - 1}, size=${memberPage.size}, searchType=${searchType}, keyword=${keyword})}"> < </a>
+        </span>
+
+        <!-- 각 페이지 번호 링크 -->
+        <span th:each="page : ${#numbers.sequence(0, memberPage.totalPages -1)}">
+            <a th:href="@{/admin/memberList(page=${page}, size=${memberPage.size}, searchType=${searchType}, keyword=${keyword})}"
+               th:text="${page + 1}"></a>
+        </span>
+
+        <!-- 다음 페이지 링크 -->
+        <span th:if="${memberPage.hasNext()}">
+            <a th:href="@{/admin/memberList(page=${memberPage.number + 1}, size=${memberPage.size}, searchType=${searchType}, keyword=${keyword})}"> > </a>
+        </span>
+    </div>
+    <script>
+        $(document).ready(function() {
+
+            $('.status-dropdown').each(function() {
+                $(this).data('previous', $(this).val());
+            });
+
+            $('.status-dropdown').change(function() {
+                let dropdown = $(this);
+                let memberId = dropdown.data('member-id');
+                let newStatus = dropdown.val();
+                let previousStatus = dropdown.data('previous');
+
+                if (newStatus === 'D') {
+                    if (confirm("해당 회원의 작성글, 메세지, 친구 등 모든 정보가 삭제됩니다. 정말로 탈퇴하시겠습니까?")) {
+                        $.ajax({
+                            url: '/admin/' + memberId + '/status',
+                            type: 'POST',
+                            data: { status: newStatus },
+                            success: function(response) {
+                                alert(response);
+                                dropdown.data('previous', newStatus);
+                                // 필요시 드롭다운을 비활성화하여 추가 변경 방지
+                                // dropdown.prop('disabled', true);
+                            },
+                            error: function(e) {
+                                alert('상태 업데이트 실패: ' + e.responseText);
+                                // 상태 변경 실패 시 드롭다운을 이전 상태로 되돌림
+                                dropdown.val(previousStatus);
+                            }
+                        });
+                    } else {
+                        dropdown.val(previousStatus);
+                    }
+                } else {
+                    $.ajax({
+                        url: '/admin/' + memberId + '/status',
+                        type: 'POST',
+                        data: { status: newStatus },
+                        success: function(response) {
+                            alert(response);
+                            dropdown.data('previous', newStatus);
+                        },
+                        error: function(e) {
+                            alert('상태 업데이트 실패: ' + e.responseText);
+                            dropdown.val(previousStatus);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</div>

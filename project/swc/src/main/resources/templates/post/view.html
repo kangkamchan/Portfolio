@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Post View</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+<h1>Post View</h1>
+<div th:if="${viewType == 'my'}">나의학습</div>
+<div th:if="${viewType == 'others'}">공유학습</div>
+<table border="1">
+    <tr>
+        <td>제목</td>
+        <td th:text="${postDTO.title}" colspan="3"></td>
+        <td th:onclick="'thumbUp('+${postDTO.postId}+');'">좋아요</td>
+        <td th:text="${postDTO.thumbUps.size()}" id="thumbUpCount"></td>
+    </tr>
+    <tr>
+        <td colspan="2">등록일</td>
+        <td colspan="2">오늘의학습여부</td>
+        <td colspan="2">오늘의학습노출기간</td>
+    </tr>
+    <tr>
+        <td colspan="2" th:text="${#temporals.format(postDTO.createdAt,'yyyy-MM-dd')}"></td>
+        <td colspan="2" th:text="${postDTO.todayType == 1 ? 'Y' : 'N'}"></td>
+        <td colspan="2" th:text="${postDTO.displayAt + ' ~ ' + postDTO.displayEnd}"></td>
+    </tr>
+    <tr>
+        <td colspan="2" th:style="'background-image: url('+${postDTO.image}+');'"></td>
+        <td th:text="${postDTO.content}" colspan="4"></td>
+    </tr>
+    <tr>
+        <td>공유한사람</td>
+        <td colspan="5">
+            <div id="shared-list-container">
+                <th:block th:each="share, status : ${postDTO.shares}">
+                    <div>
+                        <span th:text="${share.member.memberId +' '+ #temporals.format(share.createdAt,'yyyy-MM-dd')}"></span>
+                        <button th:if="${viewType == 'my'}" th:data-postId="${postDTO.postId}" th:data-sharedId="${share.member.memberId}" th:text="X" th:onclick="'deleteShare(this);'"></button>
+                    </div>
+                </th:block>
+            </div>
+            <!-- Button trigger modal -->
+            <button th:if="${viewType == 'my'}"
+                    type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                    th:text="공유하기" th:onclick="'getNotSharedFriendList('+${postDTO.postId}+');'"
+            ></button>
+        </td>
+    </tr>
+    <tr>
+        <td>분야</td>
+        <td colspan="2" th:text="${postDTO.topics}"></td>
+        <td>해시태그</td>
+        <td colspan="2" th:text="${postDTO.hashtag}"></td>
+    </tr>
+    <tr>
+       <td colspan="6">
+           <button>목록</button>
+           <th:block th:if="${viewType == 'my'}">
+               <button th:onclick="'register('+${postDTO.postId}+')'">등록</button>
+               <button th:onclick="'modify('+${postDTO.postId}+')'">수정</button>
+               <button th:onclick="'deletePost('+${postDTO.postId}+')'">삭제</button>
+           </th:block>
+       </td>
+    </tr>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">친구목록</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="not-shared-friend-list" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        function register(postId){
+            location.href="/post/register";
+        }
+        function modify(postId){
+            location.href="/post/modify?postId="+postId;
+        }
+        async function deletePost(postId){
+            try{
+                const response = await fetch(`/posts/my-posts/${postId}`, {
+                    method : 'DELETE',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                alert(result.message);
+                location.href='/post/list';
+            }catch (error){
+                console.error('학습내용 삭제 실패 :',error);
+                alert('학습내용 삭제를 실패했습니다.' || error.message);
+            }
+        }
+        let isThumbUpExist = [[${thumbUp}]];
+        async function getThumbUpCount(postId){
+            try{
+                const response = await fetch(`/thumb-ups/${postId}`, {
+                    method : "GET",
+                    headers : {
+                        'Content-Type' : 'application/json',
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                const count = result.data;
+                const countElement = document.querySelector("#thumbUpCount");
+                countElement.innerHTML = '';
+                countElement.innerHTML += count;
+            }catch(error){
+                console.error("좋아요 수 불러오기 실패" || error);
+                location.reload();
+            }
+        }
+        async function addThumbUp(postId){
+            try{
+                const response = await fetch(`/thumb-ups/${postId}`, {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                alert(result.message);
+                isThumbUpExist = "1";
+                await getThumbUpCount(postId);
+            }catch(error){
+                console.error("좋아요 실패" || error);
+                alert("좋아요 실패");
+            }
+        }
+        async function removeThumbUp(postId){
+            try{
+                const response = await fetch(`/thumb-ups/${postId}`, {
+                    method : 'DELETE',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                alert(result.message);
+                isThumbUpExist = "0";
+                await getThumbUpCount(postId);
+            }catch(error){
+                console.error("좋아요 취소 실패" || error);
+                alert("좋아요 취소 실패");
+            }
+        }
+        function thumbUp(postId){
+            if(isThumbUpExist === '0'){
+                addThumbUp(postId);
+            }else if(isThumbUpExist === '1'){
+                removeThumbUp(postId);
+            }else{
+                alert('잘못된 값 입력');
+            }
+        }
+        async function addShare(postId,sharedId,buttonElement){
+            try{
+                const response = await fetch(`/shares/${postId}/${sharedId}`, {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                const spanElement = buttonElement.parentElement;
+                buttonElement.remove();
+                spanElement.innerHTML += result.message;
+                const sharedListContainer = document.querySelector("#shared-list-container");
+                sharedListContainer.innerHTML += `
+                    <div>
+                        <span>${sharedId} ${new Date().toISOString().slice(0, 10)}</span>
+                        <button data-postId="${postId}" data-sharedId="${sharedId}" onclick="deleteShare(this);">X</button>
+                    </div>
+                `;
+            }catch(error){
+                console.error("공유 실패" || error);
+                console.error(error.message);
+                alert("공유 실패");
+            }
+        }
+        async function deleteShare(buttonElement){
+            try{
+                const postId = buttonElement.getAttribute("data-postId");
+                const sharedId = buttonElement.getAttribute("data-sharedId");
+                const response = await fetch(`/shares/${postId}/${sharedId}`, {
+                    method : 'DELETE',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                const divElement = buttonElement.parentElement;
+                divElement.remove();
+            }catch(error){
+                console.error("공유 취소 실패" || error);
+                console.error(error.message);
+                alert("공유 취소 실패");
+            }
+        }
+        async function getNotSharedFriendList(postId){
+            try{
+                const response = await fetch(`/shares/${postId}/not-shared-friends-list`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json'
+                    },
+                });
+                if(!response.ok){
+                    console.log("response not ok");
+                    const error = await response.json();
+                    console.log(error.message);
+                    alert(error.message);
+                    return;
+                }
+                console.log("response ok");
+                const result = await response.json();
+                console.log(result);
+                const friendListElement = document.querySelector("#not-shared-friend-list")
+                friendListElement.innerHTML = '';
+                const friendList = result.data;
+                for(let friend of friendList){
+                    friendListElement.innerHTML += `
+                        <div>
+                            <span>${friend.memberId}</span>
+                            <span>${friend.name}</span>
+                            <span><button class="btn" onclick="addShare(${postId},'${friend.memberId}',this)">공유하기</button></span>
+                        </div>
+                    `;
+                }
+            }catch(error){
+                console.error("친구목록 조회 실패" || error);
+                alert("친구목록 조회 실패");
+            }
+        }
+    </script>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
