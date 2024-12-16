@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/modal.css}" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .dropdown-btn1 {
+            position: relative;
+            z-index: 1;
+            background: none;
+            border: none; /* Remove the border */
+            padding: 5px 10px;
+            border-radius: 5px; /* You can keep this for rounded corners */
+            cursor: pointer; /* Optional: Add pointer cursor for better interactivity */
+        }
+
+        .dropdown-menu1 {
+            position: absolute;
+            top: 40px; /* Adjust to sit just below the button */
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            list-style: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+            display: none; /* Hidden by default */
+            width: 300px; /* Adjust dropdown menu width */
+            z-index: 10;
+            padding: 0;
+        }
+
+        .dropdown-menu li {
+            padding: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s ease; /* Add smooth hover effect */
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #f5f5f5; /* Highlight menu item on hover */
+        }
+
+        .dropdown-menu li a {
+            text-decoration: none;
+            color: #000;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Show dropdown menu on hover */
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+<section class="content">
+    <div th:fragment="header">
+        <div th:replace="main/up :: up"></div>
+        <header class="header" id="main">
+            <div class="logo">
+                <a href="/main/main"><img th:src="@{/images/logo.png}" alt="K-MOOC 로고"></a>
+            </div>
+            <nav class="navbar">
+                <ul class="menu-list">
+                    <div class="menu-icon dropdown">
+                        <button class="dropdown-btn" onclick="allBtn()">&#9776; 강좌</button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/course/list/all">전체 강좌 보기</a></li>
+                            <li><a href="#">인문</a></li>
+                            <li><a href="#">사회</a></li>
+                            <li><a href="#">공학</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu-icon dropdown">
+                        <a href="/course/list/open">상시강좌</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">대학강좌</a></li>
+                            <li><a href="#">대학 외 강좌</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu-icon dropdown">
+                        <a href="/main/bankintro">학점은행</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/main/bankintro">학점은행제 소개</a></li>
+                            <li><a href="/course/list/credit">학점은행제 강좌</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu-icon dropdown">
+                        <a href="/main/footer/business">커뮤니티</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/main/footer/business">사업 공고</a></li>
+                            <li><a href="#">공지 사항</a></li>
+                            <li><a href="/main/footer/intro">K-MOOC 소개</a></li>
+                        </ul>
+                    </div>
+                    <li style=" padding: 0;">
+                        <a href="#" id="search-button" style=" padding: 0;">
+                            <img th:src="@{/images/search.png}" alt="검색">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div th:if="${session.memberDTO == null}" class="user-actions">
+                <a href="/login/login" id="loginBtn">로그인</a>
+                <a href="/login/memberchose" id="registBtn">회원가입</a>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="/main/footer/business">커뮤니티</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/main/footer/business">사업 공고</a></li>
+                    <li><a href="#">공지 사항</a></li>
+                    <li><a href="/main/footer/intro">K-MOOC 소개</a></li>
+                </ul>
+            </div>
+            <li style=" padding: 0;">
+                <a href="#" id="search-button" style=" padding: 0;">
+                    <img th:src="@{/images/search.png}" alt="검색">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div th:if="${session.memberDTO == null}" class="user-actions">
+        <a href="/login/login" id="loginBtn">로그인</a>
+        <a href="/login/memberchose" id="registBtn">회원가입</a>
+    </div>
+    <div th:if="${session.memberDTO != null}" class="user-actions">
+        <nav class="navbar">
+            <ul class="menu-list" style="height: 0px;">
+                <a href="/mypage/myclass" style="color: black;margin-right: -15px;">나의 강의실</a>
+                <div class="menu-icon dropdown">
+                    <a class="dropdown-btn1"><img th:src="@{/images/man.png}" style="width:65px;margin-left: -13px;margin-top: -18px;"></a>
+                    <ul class="dropdown-menu" style="width: 259px; height: 400px;">
+                        <img th:src="@{/images/man.png}" >
+                        <h2 style="margin-left: 12px;color: black">[[${session.memberDTO.userName}]] 님</h2>
+                        <hr>
+                        <li><a href="/mypage/myclass"><i class="fas fa-chalkboard"></i><img th:src="@{/images/a3.png}" style="width: 30px; margin-right: 4px; margin-bottom: -8px;" /> 내 강의실</a></li>
+                        <li><a href="/mypage/creditTransform"><i class="fas fa-graduation-cap"></i><img th:src="@{/images/a2.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> K-MOOC 학점은행제</a></li>
+                        <!--<li><a href="#"><i class="fas fa-star"></i> 관심분야설정</a></li> 시간나면 하기루-->
+                        <li><a href="/mypage/memberView"><i class="fas fa-user-cog"></i><img th:src="@{/images/a1.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;;"/> 개인정보관리</a></li>
+                        <hr><li><a href="/login/logout"><i class="fas fa-user-cog"></i><img th:src="@{/images/logout.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> 로그아웃</a></li>
+                    </ul>
+                </div>
+            </ul>
+        </nav>
+    </div>
+</header>
+</div>
+</section>
+
+<script>
+    // JavaScript 코드 추가
+    // document.getElementById('search-button').addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     // header 요소 가져오기
+    //     const headerElement = document.getElementById('main');
+    //     // 새로운 div 요소 생성
+    //     const modalDiv = document.createElement('div');
+    //     modalDiv.setAttribute('th:replace', 'main/modal :: modal');
+    //     // header 아래에 div 추가
+    //     headerElement.insertAdjacentElement('afterend', modalDiv);
+    //     // 확인용 (콘솔 출력)
+    //     console.log('<div th:replace="main/modal :: modal"></div> 추가 완료');
+    // });
+
+    function allBtn() {
+        window.location.href = '/course/list/all';
+    }
+
+</script>
+
+</body>
+</html>

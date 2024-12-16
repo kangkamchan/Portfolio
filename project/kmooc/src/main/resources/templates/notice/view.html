@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        /* General Styles */
+
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Notice Header */
+        .notice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .notice-header h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Notice Content */
+        .notice-content {
+            margin-bottom: 30px;
+        }
+
+        .notice-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notice-title .tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #0056b3;
+            color: white;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .notice-title h2 {
+            font-size: 18px;
+            font-weight: bold;
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .share-btn {
+            padding: 5px 10px;
+            background: #ddd;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .notice-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .notice-description {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .notice-description ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .notice-description ul li {
+            margin-bottom: 8px;
+        }
+
+        .notice-description a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .notice-description a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navigation Section */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .navigation .prev {
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .navigation .prev span {
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .navigation .prev a {
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .navigation .prev a:hover {
+            text-decoration: underline;
+        }
+
+        .navigation .list-btn {
+            padding: 10px 20px;
+            background: rgba(66, 66, 66, 0.66);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .navigation .list-btn:hover {
+            background: rgba(66, 66, 66, 0.52);
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<section class="content" layout:fragment="maincontent">
+
+
+    <div class="container">
+        <!-- Notice Header -->
+        <header class="notice-header">
+            <h1>공지사항</h1>
+        </header>
+
+        <!-- Notice Content -->
+        <section class="notice-content">
+            <div class="notice-title">
+                <h2>[[${item.title}]]</h2>
+            </div>
+            <div class="notice-meta">
+                <p><strong>작성일:</strong><strong th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></strong></p>
+            </div>
+            <div class="notice-description">
+                <p th:text="${item.content}">
+            </div>
+        </section>
+
+        <!-- Navigation Section -->
+        <section class="navigation">
+            <button class="list-btn" id="listBtn">목록</button>
+        </section>
+    </div>
+
+
+</section>
+<script layout:fragment="script" th:inline="javascript">
+
+    const listBtn = document.getElementById("listBtn")
+    listBtn.addEventListener("click", ()=>{
+       location.href='/main/notice/list'
+    });
+</script>
+
+
+</body>
+</html>

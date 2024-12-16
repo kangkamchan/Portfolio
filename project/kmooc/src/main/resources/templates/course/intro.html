@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        /* General Styles */
+
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h1, .section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Table Styles */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        /* Steps Section */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .step {
+            text-align: center;
+            width: 30%;
+        }
+
+        .step .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Process Section */
+        .process {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .process-step {
+            text-align: center;
+            width: 30%;
+        }
+
+        .process-step .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .process-step select {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+<section class="content" layout:fragment="maincontent">
+
+    <div class="container">
+        <!-- Section 1 -->
+        <section class="section">
+            <h1>K-MOOC 학점은행제 학습과정이란?</h1>
+            <p>K-MOOC 강좌를 수료한 학습자가 학습결과를 학점으로 인정받을 수 있는 제도입니다. 이는 학점인정 등에 관한 법률에 따라 학점으로 인정됩니다.</p>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="section">
+            <h2>K-MOOC "학점은행제 학습과정"과 "비학점은행제 학습과정"은 어떻게 다른가요?</h2>
+            <table class="comparison-table">
+                <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>학점은행제 학습과정</th>
+                    <th>비학점은행제 학습과정</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>수강대상</td>
+                    <td>학점은행제 과정 신청자</td>
+                    <td>일반 수강생</td>
+                </tr>
+                <tr>
+                    <td>학습결과</td>
+                    <td>학점 인정 가능</td>
+                    <td>학점 인정 불가</td>
+                </tr>
+                <tr>
+                    <td>학습기간</td>
+                    <td>15주</td>
+                    <td>자유롭게</td>
+                </tr>
+                <tr>
+                    <td>이수증</td>
+                    <td>발급 가능</td>
+                    <td>발급 가능</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="section">
+            <h2>어떻게 하면 학점으로 인정받을 수 있나요?</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="icon">📄</div>
+                    <p>과정 신청</p>
+                </div>
+                <div class="step">
+                    <div class="icon">📚</div>
+                    <p>강의 수강</p>
+                </div>
+                <div class="step">
+                    <div class="icon">✔️</div>
+                    <p>학점 인정 신청</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="section">
+            <h2>학점 인정 절차</h2>
+            <div class="process">
+                <div class="process-step">
+                    <div class="icon">👤</div>
+                    <p>학습자 등록</p>
+                </div>
+                <div class="process-step">
+                    <div class="icon">📄</div>
+                    <p>학점 신청</p>
+                </div>
+                <div class="process-step">
+                    <div class="icon">🏆</div>
+                    <p>학점 인정</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</section>
+
+</body>
+</html>

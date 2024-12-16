@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <style>
+        /* Scroll to Top Button */
+        .scroll-top-button {
+            position: fixed;
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000; /* Optional: Border for better visibility */
+            font-size: 24px;
+            text-align: center;
+            line-height: 50px; /* Align the arrow vertically */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000; /* Ensure it's on top of other elements */
+        }
+
+        .scroll-top-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1); /* Slight zoom effect */
+        }
+
+        .scroll-top-button span {
+            display: inline-block;
+            transform: rotate(90deg); /* Adjust arrow direction if needed */
+        }
+
+
+    </style>
+</head>
+<body>
+<div th:fragment="footer">
+
+    <footer class="footer">
+        <div class="footer-top">
+            <ul class="footer-links">
+                <li><a href="/main/footer/personalrule">개인정보처리방침</a></li>
+                <li><a href="/main/footer/userterms">이용약관</a></li>
+                <li><a href="/main/footer/copyright">저작권보호 정책</a></li>
+                <li><a href="/admin/login">관리자 페이지</a></li>
+                <li><a href="/main/main">K-MOOC 페이지</a></li>
+            </ul>
+            <div class="footer-logos">
+                <img th:src="@{/images/flogo1.png}" alt="교육부 로고"><span style="color: white;">교육부</span>
+                <img th:src="@{/images/flogo2.png}" alt="국가평생교육진흥원 로고"><span style="color: white;">국가평생교육진흥원</span>
+            </div>
+        </div>
+        <div class="footer-middle">
+            <ul class="footer-menu">
+                <li><a href="/main/footer/intro">K-MOOC소개</a></li>
+                <li><a href="#">커뮤니티</a></li>
+                <li><a href="/main/footer/business">사업공고</a></li>
+            </ul>
+            <div class="contact-info">
+                <p>(04520) 서울특별시 중구 정계로 14 (무교로77)</p>
+                <p>(Tel) 1811-3118 <span>※ 평일 9:00~18:00 운영 (점심시간 12:00~13:00 제외)</span></p>
+                <p>E-mail: info_kmooc@nile.or.kr</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>COPYRIGHT © 2022 NATIONAL INSTITUTE FOR LIFELONG EDUCATION. ALL RIGHTS RESERVED</p>
+            <div class="family-site">
+                <label for="family-select">패밀리 사이트</label>
+                <select id="family-select">
+                    <option>패밀리 사이트</option>
+                    <option>사이트 1</option>
+                    <option>사이트 2</option>
+                    <option>사이트 3</option>
+                </select>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<script>
+    function scrollToTop(event) {
+        event.preventDefault(); // Prevent default behavior
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Smooth scrolling effect
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/mypagesidebar.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:fragment="sidebar" class="sidebar">
+    <h2>마이페이지</h2>
+    <ul>
+        <li><a href="/mypage/myclass"><i class="fas fa-chalkboard"></i><img th:src="@{/images/a3.png}" style="width: 30px; margin-right: 4px;"/> 내 강의실</a></li>
+        <li><a href="/mypage/creditclass"><i class="fas fa-graduation-cap"></i><img th:src="@{/images/a2.png}" style="width: 30px; margin-right: 4px;"/> K-MOOC 학점은행제</a></li>
+        <li><a href="/mypage/memberView"><i class="fas fa-user-cog"></i><img th:src="@{/images/a1.png}" style="width: 30px; margin-right: 4px;"/> 개인정보관리</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

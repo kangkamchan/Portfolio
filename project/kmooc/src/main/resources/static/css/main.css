@@ -1,0 +1,415 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.banner {
+    background-color: #ffffff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.banner-content h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.banner-content p {
+    margin-bottom: 15px;
+}
+
+.banner-content ul {
+    margin-bottom: 15px;
+}
+
+.banner-content .tags button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: white;
+    color: #003399;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.banner-carousel button {
+    background-color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.notice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    font-size: 0.9rem;
+}
+
+.search {
+    padding: 20px;
+    background-color: #ffffff;
+    color: white;
+    text-align: center;
+}
+
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    padding: 10px;
+    width: 500px;
+    border: none;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.categories button {
+    margin: 5px;
+    padding: 5px 15px;
+    border: none;
+    background-color: white;
+    color: #003399;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+
+
+.search-login a {
+    text-decoration: none;
+    color: #000;
+}
+
+.search-login a:hover {
+    color: #007BFF;
+}
+
+/* Main Banner Style */
+.main-banner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-banner img {
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.main-banner img.active {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* 세로 정렬 */
+        gap: 10px;
+    }
+
+    .navbar, .user-actions {
+        justify-content: center; /* 각각 중앙 정렬 유지 */
+    }
+
+    .menu-list {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.notice-board {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notice-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.notice-content {
+    flex-grow: 1;
+    margin-left: 15px;
+}
+
+.notice-text {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.notice-date {
+    font-size: 14px;
+    color: #888;
+    margin: 5px 0 0;
+}
+
+.dropdown-icon {
+    font-size: 18px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.dropdown-icon:hover {
+    color: #555;
+}
+
+
+
+.search-container {
+    background-color: #0041c2;
+    padding: 30px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    margin: 30px auto;
+    color: white;
+    text-align: center;
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box h2 {
+    margin: 0 0 15px;
+    font-size: 24px;
+    color: white;
+}
+
+.search-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 25px;
+    padding: 5px 10px;
+    width: 80%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.search-input input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.search-input button {
+    background-color: #00c17c;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-input button img {
+    width: 20px;
+    height: 20px;
+}
+
+.categories {
+    margin-top: 15px;
+}
+
+.categories a {
+    margin: 0 10px;
+    font-size: 14px;
+    color: white;
+    text-decoration: none;
+}
+
+.categories a:hover {
+    text-decoration: underline;
+}
+
+
+.course-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #0041c2;
+    margin-bottom: 20px;
+}
+
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.course-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(25% - 20px);
+    display: flex;
+    flex-direction: column;
+}
+
+.course-image {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #0041c2;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.badge.popular {
+    left: auto;
+    right: 10px;
+    background-color: #00c17c;
+}
+
+.course-info {
+    padding: 15px;
+    text-align: left;
+}
+
+.course-info h3 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.course-info p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.course-date {
+    color: #888;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.tags {
+    margin-top: 10px;
+}
+
+.tags span {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #555;
+    font-size: 12px;
+    padding: 5px 8px;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+
+/* styles.css */
+
+
+.category-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.category-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.pointer {
+    cursor: pointer;
+}

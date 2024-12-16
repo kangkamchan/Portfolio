@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+    xmlns="http://www.w3.org/1999/html" layout:decorate="~{main/headerlayout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/learnsidebar.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .content {
+            max-width: 100%;
+            max-height: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            color: #fff;
+            border-bottom: 4px solid #3d4a59;
+            height: 100px;
+
+        }
+
+        .header2 h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .user-info {
+            font-size: 14px;
+        }
+
+        .lecture-overview {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .lecture-overview img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .lecture-overview h2 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .lecture-overview p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #34495e;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .lecture-overview p::before {
+            content: "•";
+            color: #3498db;
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .lecture-overview .status-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-published {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .status-draft {
+            background-color: #f1c40f;
+            color: white;
+        }
+
+        .status-deleted {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .overview-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover {
+            background: #007bff;
+            color: #fff;
+        }
+
+        /* Professor Info */
+        .professor-info {
+            margin-top: 30px;
+        }
+
+        .professor-info h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .professor-info img {
+            width: 120px;
+            height: auto;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* 새로운 강의 콘텐츠 스타일 */
+        .accordion-item {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            padding: 15px;
+            display: none;
+        }
+
+        .accordion-content.active {
+            display: block;
+        }
+
+        .content-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #quizQuestion {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        #quizAnswer {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #resultMessage {
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+
+    <section class="content" layout:fragment="maincontent">
+        <div th:replace="learn/sidebar :: sidebar"></div>
+
+        <div class="lecture-overview">
+            <img th:src="${course.thumbnail}" alt="강좌 썸네일">
+            <h2>[[${course.title}]]</h2>
+            <p th:utext="${course.description}"></p>
+            <p>수강 기간: [[${course.weeks}]]주</p>
+            <p>학습 시간: [[${course.learningTime}]]분</p>
+            <p th:if="${course.language == 'KOREAN'}">언어: 한국어</p>
+            <p th:if="${course.language == 'ENGLISH'}">언어: 영어</p>
+            <p th:if="${course.isCreditBank == 1}">과정 유형: 학점은행제 강의</p>
+            <p th:if="${course.isCreditBank == 0}">과정 유형: 일반 강의</p>
+            <p>강사: [[${course.teacherName}]]</p>
+            <p>
+                상태:
+                <span class="status-badge" th:classappend="${course.status == 'PUBLISHED' ? 'status-published' : 
+                                      course.status == 'DRAFT' ? 'status-draft' : 'status-deleted'}" th:text="${course.status == 'DRAFT' ? '임시저장' : 
+                               course.status == 'PUBLISHED' ? '공개' : '삭제'}">
+                </span>
+            </p>
+            <p><button th:data-course-id="${course.courseId}" onclick="checkProgressRate(this)">내 진도율 확인하기</button></p>
+        </div>
+
+        <div class="course-content">
+            <h2>강의 콘텐츠</h2>
+            <div class="accordion">
+                <div th:if="${course.lectures != null}" th:each="lecture : ${course.lectures}" class="accordion-item">
+                    <div class="accordion-header" th:data-lecture-id="${lecture.lectureId}"
+                        onclick="toggleAccordion(this)">
+                        <span th:text="${lecture.title}">섹션 제목</span>
+                    </div>
+                    <div th:id="'lecture-' + ${lecture.lectureId}" class="accordion-content">
+                        <p th:utext="${lecture.description}">섹션 설명</p>
+
+                        <!-- 콘텐츠 목록 -->
+                        <div th:each="content : ${lecture.contents}" class="content-item">
+                            <div class="content-title">
+                                <span th:if="${content.isVideo == 1}"><i class="fas fa-video"></i></span>
+                                <span th:if="${content.isVideo == 0}"><i class="fas fa-file-alt"></i></span>
+                                <span th:text="${content.title}">콘텐츠 제목</span>
+                            </div>
+                            <div class="content-actions">
+                                <a th:if="${content.isVideo == 1 && content.file != null}"
+                                    th:data-video-path="${content.file?.filePath}"
+                                    th:data-lecture-content-id="${content.lectureContentId}"
+                                    onclick="openVideoModal(this)" class="btn">동영상 보기</a>
+                                <a th:if="${content.isVideo == 0 && content.file != null}"
+                                    th:href="@{${content.file?.filePath}}" class="btn" target="_blank">문서 보기</a>
+                                <a th:if="${content.isVideo == 0 && content.file != null}"
+                                    th:href="@{/api/teacher/download(filePath=${content.file?.filePath})}" class="btn"
+                                    target="_blank">다운로드</a>
+                            </div>
+
+                        </div>
+                        <div th:if="${lecture.quizzes != null && !lecture.quizzes.empty}" class="content-item">
+                            <div class="content-title">
+                                <span><i class="fas fa-question"></i></span>
+                                <span>퀴즈</span>
+                            </div>
+                            <div class="content-actions">
+                                <a class="btn" th:data-lecture-id="${lecture.lectureId}"
+                                    th:data-quiz-data="${#strings.arrayJoin(lecture.quizzes.![question + '|||' + answer], '|||')}"
+                                    onclick="openQuizModal(this)">퀴즈 풀기</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 비디오 모달 추가 -->
+        <div id="videoModal"
+            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+            <div class="modal-header">
+                <h3>동영상 보기</h3>
+                <button onclick="closeVideoModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <video id="videoPlayer" style="width: 100%;" controls>
+                    <source src="" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <!-- 퀴즈 모달 -->
+        <div id="quizModal"
+            style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000; width: 90%; max-width: 600px; border-radius: 8px;">
+            <div class="modal-header">
+                <h3>섹션 퀴즈</h3>
+                <button onclick="closeQuizModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="quizProgress" class="text-center mb-3">
+                    <span id="currentQuizNumber">1</span> / <span id="totalQuizCount">0</span>
+                </div>
+                <div id="quizContent">
+                    <p id="quizQuestion"></p>
+                    <input type="text" id="quizAnswer" class="form-control" placeholder="답을 입력하세요">
+                    <button onclick="submitQuizAnswer()" class="btn btn-primary mt-3">제출</button>
+                </div>
+                <div id="quizResult" style="display: none;">
+                    <p id="resultMessage"></p>
+                    <button id="nextQuizBtn" onclick="showNextQuiz()" class="btn btn-primary">다음 문제</button>
+                    <button onclick="closeQuizModal()" class="btn btn-secondary">종료</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggleAccordion(element) {
+                const lectureId = element.getAttribute('data-lecture-id');
+                const content = document.getElementById('lecture-' + lectureId);
+                content.classList.toggle('active');
+            }
+
+            function openVideoModal(button) {
+                const lectureContentId = button.getAttribute('data-lecture-content-id');
+                const videoPath = button.getAttribute('data-video-path');
+                const modal = document.getElementById('videoModal');
+                const videoPlayer = document.querySelector('#videoPlayer source');
+                videoPlayer.src = videoPath;
+                videoPlayer.parentElement.load();
+                modal.style.display = 'block';
+                updateLearnHistory(lectureContentId);
+            }
+
+            function closeVideoModal() {
+                const modal = document.getElementById('videoModal');
+                const videoPlayer = document.querySelector('#videoPlayer');
+                videoPlayer.pause();
+                modal.style.display = 'none';
+            }
+
+            async function updateLearnHistory(lectureContentId) {
+                try {
+                    const response = await fetch(`/api/learn-history/${lectureContentId}`, {
+                        method: "PUT"
+                    });
+                    const result = await response.json();
+
+                    if (result.creditAdded) {
+                        alert("축하합니다! 강의를 완료하여 학점이 추가되었습니다.");
+                    } else if (result.isCompleted) {
+                        alert("이미 완료된 강의입니다.");
+                    } else {
+                        alert("학습 진도가 저장되었습니다.")
+                    }
+
+                    return result.isCompleted;
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("학습 진도 저장 중 오류가 발생했습니다.");
+                    return false;
+                }
+            }
+
+            async function checkProgressRate(button) {
+                const courseId = button.getAttribute('data-course-id');
+                console.log("courseId : " + courseId);
+                const response = await fetch(`/api/learn-history/${courseId}`, {
+                    method: "get"
+                });
+                const result = await response.json();
+                const progressRate = result.progressRate;
+                const percentage = Math.round(progressRate * 100);
+                alert(`현재 진도율: ${percentage}%`);
+            }
+            let quizzes = [];
+            let currentQuizIndex = 0;
+
+            function openQuizModal(button) {
+                const quizData = button.getAttribute('data-quiz-data').split('|||');
+                quizzes = [];
+                currentQuizIndex = 0;
+                
+                // 퀴즈 데이터 파싱
+                for (let i = 0; i < quizData.length; i += 2) {
+                    quizzes.push({
+                        question: quizData[i],
+                        answer: quizData[i + 1]
+                    });
+                }
+                
+                // 모달 초기화
+                document.getElementById('totalQuizCount').textContent = quizzes.length;
+                showCurrentQuiz();
+                document.getElementById('quizModal').style.display = 'block';
+            }
+
+            function showCurrentQuiz() {
+                const currentQuiz = quizzes[currentQuizIndex];
+                document.getElementById('currentQuizNumber').textContent = currentQuizIndex + 1;
+                document.getElementById('quizQuestion').textContent = currentQuiz.question;
+                document.getElementById('quizAnswer').value = '';
+                document.getElementById('quizContent').style.display = 'block';
+                document.getElementById('quizResult').style.display = 'none';
+            }
+
+            function submitQuizAnswer() {
+                const userAnswer = document.getElementById('quizAnswer').value.trim();
+                const currentQuiz = quizzes[currentQuizIndex];
+                const isCorrect = userAnswer === currentQuiz.answer;
+                
+                document.getElementById('quizContent').style.display = 'none';
+                document.getElementById('quizResult').style.display = 'block';
+                document.getElementById('resultMessage').textContent = isCorrect ? 
+                    '정답입니다! 👏' : 
+                    `틀렸습니다. 정답은 "${currentQuiz.answer}" 입니다.`;
+                    
+                // 마지막 문제인 경우 다음 문제 버튼 숨기기
+                const nextQuizBtn = document.getElementById('nextQuizBtn');
+                if (currentQuizIndex === quizzes.length - 1) {
+                    nextQuizBtn.style.display = 'none';
+                } else {
+                    nextQuizBtn.style.display = 'inline-block';
+                }
+            }
+
+            function showNextQuiz() {
+                if (currentQuizIndex < quizzes.length - 1) {
+                    currentQuizIndex++;
+                    showCurrentQuiz();
+                }
+            }
+
+            function closeQuizModal() {
+                document.getElementById('quizModal').style.display = 'none';
+                quizzes = [];
+                currentQuizIndex = 0;
+            }
+
+            // ESC 키로 모달 닫기
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeQuizModal();
+                }
+            });
+
+            // Enter 키로 답안 제출
+            document.getElementById('quizAnswer').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    submitQuizAnswer();
+                }
+            });
+        </script>
+
+    </section>
+
+
+    <script layout:fragment="script" th:inline="javascript">
+        const report = document.getElementById("breport")
+        report.addEventListener("click", () => {
+            location.href = '#report'
+        });
+
+        const binform = document.getElementById("binform")
+        binform.addEventListener("click", () => {
+            location.href = '#inform'
+        });
+
+        const qna = document.getElementById("bqna")
+        qna.addEventListener("click", () => {
+            location.href = '#qna'
+        });
+    </script>
+
+</body>
+
+</html>

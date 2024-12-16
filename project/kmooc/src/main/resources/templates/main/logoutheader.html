@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:fragment="header">
+<header class="header">
+    <div class="logo">
+        <a href="/main/main"><img th:src="@{/images/logo.png}" alt="K-MOOC 로고"></a>
+    </div>
+    <nav class="navbar">
+        <ul class="menu-list">
+            <div class="menu-icon dropdown">
+                <button class="dropdown-btn">&#9776; 강좌</button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">전체 강좌 보기</a></li>
+                    <li><a href="#">인문</a></li>
+                    <li><a href="#">사회</a></li>
+                    <li><a href="#">공학</a></li>
+                </ul>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="#">상시강좌</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">대학강좌</a></li>
+                    <li><a href="#">대학 외 강좌</a></li>
+                </ul>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="#">학점은행</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">학점은행제 소개</a></li>
+                    <li><a href="#">학점은행제 강좌</a></li>
+                </ul>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="#">커뮤니티</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">사업 공고</a></li>
+                    <li><a href="#">공지 사항</a></li>
+                    <li><a href="#">Q n A</a></li>
+                </ul>
+            </div>
+            <li><a href="#"><img th:src="@{/images/search.png}"></a></li>
+        </ul>
+    </nav>
+    <div class="user-actions">
+        <a href="/login/login" id="loginBtn">로그인</a>
+        <a href="/login/memberchose" id="registBtn">회원가입</a>
+    </div>
+</header>
+</div>
+
+</body>
+</html>

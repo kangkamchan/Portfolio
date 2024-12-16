@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+<!--    <link th:href="@{/css/modal.css}" rel="stylesheet"/>-->
+    <link th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .dropdown-btn1 {
+            position: relative;
+            z-index: 1;
+            background: none;
+            border: none; /* Remove the border */
+            padding: 5px 10px;
+            border-radius: 5px; /* You can keep this for rounded corners */
+            cursor: pointer; /* Optional: Add pointer cursor for better interactivity */
+        }
+
+        .dropdown-menu1 {
+            position: absolute;
+            top: 40px; /* Adjust to sit just below the button */
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            list-style: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+            display: none; /* Hidden by default */
+            width: 300px; /* Adjust dropdown menu width */
+            z-index: 10;
+            padding: 0;
+        }
+
+        .dropdown-menu li {
+            padding: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s ease; /* Add smooth hover effect */
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #f5f5f5; /* Highlight menu item on hover */
+        }
+
+        .dropdown-menu li a {
+            text-decoration: none;
+            color: #000;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Show dropdown menu on hover */
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<script>
+    const errors = `[[${errors ?: ''}]]`;
+    if (errors && errors.trim() !== '') {
+        alert(errors);
+    }
+    const error = `[[${errorr ?: ''}]]`;
+    if (error && error.trim() !== '') {
+        alert(error);
+    }
+</script>
+<header class="header" id="main">
+    <div th:replace="main/up :: up"></div>
+    <div class="logo">
+        <a href="/main/main"><img th:src="@{/images/logo.png}" alt="K-MOOC 로고"></a>
+    </div>
+    <nav class="navbar">
+        <ul class="menu-list">
+            <div class="menu-icon dropdown">
+                <button class="dropdown-btn dropdown-subject-btn" onclick="allBtn()">&#9776; 강좌</button>
+                <ul class="dropdown-menu dropdown-subject">
+                    <li><a href="/course/list/all">전체 강좌 보기</a></li>
+                </ul>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="/course/list/open">상시강좌</a>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="/main/bankintro">학점은행</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/main/bankintro">학점은행제 소개</a></li>
+                    <li><a href="/course/list/credit">학점은행제 강좌</a></li>
+                </ul>
+            </div>
+            <div class="menu-icon dropdown">
+                <a href="/main/footer/business">커뮤니티</a>
+                <ul class="dropdown-menu">
+                    <li><a href="/main/footer/business">사업 공고</a></li>
+                    <li><a href="/main/notice/list">공지 사항</a></li>
+                    <li><a href="/main/footer/intro">K-MOOC 소개</a></li>
+                </ul>
+            </div>
+        </ul>
+    </nav>
+    <div th:if="${session.memberDTO == null}" class="user-actions">
+        <a href="/login/login" id="loginBtn">로그인</a>
+        <a href="/login/memberchose" id="registBtn">회원가입</a>
+    </div>
+    <div th:if="${session.memberDTO != null}" class="user-actions">
+        <nav class="navbar">
+            <ul class="menu-list">
+                <a href="/mypage/myclass" style="color: black;margin-right: -15px;margin-top: 20px;">나의 강의실</a>
+                <div class="menu-icon dropdown">
+                    <a class="dropdown-btn1"><img th:src="@{/images/man.png}" style="width:65px;margin-left: -13px;margin-top: -10px;"></a>
+                    <ul class="dropdown-menu" style="width: 259px; height: 400px;">
+                        <img th:src="@{/images/man.png}" style="width:70px; ">
+                        <h2 style="margin-left: 12px;color: black">[[${session.memberDTO.userName}]] 님</h2>
+                        <hr>
+                        <li><a href="/mypage/myclass"><i class="fas fa-chalkboard"></i><img
+                                th:src="@{/images/a3.png}"
+                                style="width: 30px; margin-right: 4px; margin-bottom: -8px;"/> 내 강의실</a></li>
+                        <li><a href="/mypage/creditTransform"><i class="fas fa-graduation-cap"></i><img
+                                th:src="@{/images/a2.png}"
+                                style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> K-MOOC 학점은행제</a>
+                        </li>
+                        <!--<li><a href="#"><i class="fas fa-star"></i> 관심분야설정</a></li> 시간나면 하기루-->
+                        <li><a href="/mypage/memberView"><i class="fas fa-user-cog"></i><img
+                                th:src="@{/images/a1.png}"
+                                style="width: 30px; margin-right: 4px;margin-bottom: -8px;;"/> 개인정보관리</a></li>
+                        <hr>
+                        <li><a href="/login/logout"><i class="fas fa-user-cog"></i><img
+                                th:src="@{/images/logout.png}"
+                                style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> 로그아웃</a></li>
+                    </ul>
+                </div>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div>
+    <th:block layout:fragment="maincontent"></th:block>
+</div>
+
+<div>
+    <footer class="footer">
+        <div class="footer-top">
+            <ul class="footer-links">
+                <li><a href="/main/footer/personalrule">개인정보처리방침</a></li>
+                <li><a href="/main/footer/userterms">이용약관</a></li>
+                <li><a href="/main/footer/copyright">저작권보호 정책</a></li>
+                <li><a href="/admin/login">관리자 페이지</a></li>
+                <li><a href="/main/main">K-MOOC 페이지</a></li>
+            </ul>
+            <div class="footer-logos">
+                <img th:src="@{/images/flogo1.png}" alt="교육부 로고"><span style="color: white;">교육부</span>
+                <img th:src="@{/images/flogo2.png}" alt="국가평생교육진흥원 로고"><span style="color: white;">국가평생교육진흥원</span>
+            </div>
+        </div>
+        <div class="footer-middle">
+            <ul class="footer-menu">
+                <li><a href="/main/footer/intro">K-MOOC소개</a></li>
+                <li><a href="#">커뮤니티</a></li>
+                <li><a href="/main/footer/business">사업공고</a></li>
+            </ul>
+            <div class="contact-info">
+                <p>(04520) 서울특별시 중구 정계로 14 (무교로77)</p>
+                <p>(Tel) 1811-3118 <span>※ 평일 9:00~18:00 운영 (점심시간 12:00~13:00 제외)</span></p>
+                <p>E-mail: info_kmooc@nile.or.kr</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>COPYRIGHT © 2022 NATIONAL INSTITUTE FOR LIFELONG EDUCATION. ALL RIGHTS RESERVED</p>
+            <div class="family-site">
+                <label>패밀리 사이트</label>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+<th:block layout:fragment="script">
+</th:block>
+
+<th:block layout:fragment="pagingscript">
+</th:block>
+
+<th:block layout:fragment="unenrollscript">
+</th:block>
+
+<script>
+    function scrollToTop(event) {
+        event.preventDefault(); // Prevent default behavior
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth" // Smooth scrolling effect
+        });
+    }
+
+    function allBtn() {
+        window.location.href = '/course/list/all';
+    }
+
+
+    let flag = 0;
+    const dropdown_subject = document.querySelector(".dropdown-subject");
+    document.querySelector(".dropdown-subject-btn").addEventListener("mouseover", async evt => {
+        const url = "http://localhost:8080/api/main/subjects";
+
+        if(flag === 1)
+            return;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const subjects = await response.json();
+
+            console.log(subjects);
+            //
+            // const subjects = response_json.map(subject => { return {"subjectId":subject.subjectId, "subjectName":subject.subjectName} });
+
+            flag = 1;
+
+            for(let item of subjects) {
+                dropdown_subject.innerHTML += '<li><a href="/course/list/all?subjectId='+ item.subjectId +'">'+item.subjectName+'</a></li>'
+            }
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    });
+</script>
+</body>
+</html>

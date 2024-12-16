@@ -1,0 +1,43 @@
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.page-btn {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.page-btn.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.page-btn:hover {
+    background-color: #0056b3;
+    color: white;
+}
+.blue-button {
+    margin-top: 20px;
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Add padding */
+    font-size: 14px; /* Adjust font size */
+    font-weight: bold; /* Bold text */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth hover effects */
+}
+
+.blue-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      th:fragment="up"
+>
+<head >
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <style>
+        /* Scroll to Top Button */
+        .scroll-top-button {
+            position: fixed;
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000; /* Optional: Border for better visibility */
+            font-size: 24px;
+            text-align: center;
+            line-height: 50px; /* Align the arrow vertically */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000; /* Ensure it's on top of other elements */
+        }
+
+        .scroll-top-button span {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<a href="#main" class="scroll-top-button" onclick="scrollToTop(event)">
+    <span>▲</span>
+</a>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+
+        .vision-circles {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vision-circles div {
+            width: 60px;
+            height: 60px;
+            background-color: #0056b3;
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .activities-section {
+            margin-bottom: 40px;
+        }
+
+        .activities-section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+
+        .activity-cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 15px;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .learning-usage-section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .usage-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 15px;
+        }
+
+        .usage-item h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .usage-item p {
+            font-size: 1em;
+        }
+        .img{
+
+            width: 250px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="main/header :: header"></div>
+
+<section class="content" layout:fragment="maincontent">
+
+    <div class="container">
+        <!-- 헤더 섹션 -->
+        <section class="header-section">
+            <h1>K-MOOC의 의미와 비전</h1>
+            <div class="vision-circles">
+                <div>K</div>
+                <div>M</div>
+                <div>O</div>
+                <div>O</div>
+                <div>C</div>
+            </div>
+            <p class="subtitle">
+                <strong>K</strong>-Massive, Open, Online, Course의 줄임말로 한국형 온라인 공개 강좌를 뜻합니다.
+            </p>
+            <p>
+                K-MOOC는 학습자를 이렇게 만듭니다.<br>
+                학습자 중심의 교육, 자유로운 강좌 수강을 통한 무한 학습의 기회를 제공합니다.<br>
+                누구나 쉽고 편리하게 언제 어디서든 원하는 강좌를 수강하며, 새로운 학문의 즐거움과 도전을 느낄 수 있도록 돕습니다.
+            </p>
+        </section>
+
+        <!-- 활동 모습 섹션 -->
+        <section class="activities-section">
+            <h2>알찬 활동 모습</h2>
+            <div class="activity-cards">
+                <div class="card">
+                    <img class="img" th:src="@{/images/icon5.png}" alt="박람회">
+                    <h3>박람회</h3>
+                    <p>전문 행사에서의 강의와 만남</p>
+                </div>
+                <div class="card">
+                    <img class="img" th:src="@{/images/icon6.png}" alt="토크콘서트">
+                    <h3>토크콘서트</h3>
+                    <p>다양한 전문가와의 교류와 새로운 아이디어</p>
+                </div>
+                <div class="card">
+                    <img class="img" th:src="@{/images/icon7.png}" alt="특강">
+                    <h3>특강</h3>
+                    <p>전문 강의와 특별한 경험을 제공</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 학습자 활용방법 섹션 -->
+        <section class="learning-usage-section">
+            <h2>학습자 활용방법</h2>
+            <div class="usage-grid">
+                <div class="usage-item">
+                    <h3>청소년</h3>
+                    <p>미래 진로 설계</p>
+                </div>
+                <div class="usage-item">
+                    <h3>대학생</h3>
+                    <p>학점 인정 및 취업에 도움</p>
+                </div>
+                <div class="usage-item">
+                    <h3>직장인</h3>
+                    <p>자기계발과 전문성 향상</p>
+                </div>
+                <div class="usage-item">
+                    <h3>구직자·학부모</h3>
+                    <p>정보 습득 및 강의 참여</p>
+                </div>
+                <div class="usage-item">
+                    <h3>교수</h3>
+                    <p>교수법 및 콘텐츠 활용</p>
+                </div>
+                <div class="usage-item">
+                    <h3>대학</h3>
+                    <p>플립러닝 및 온라인 수업 도입</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+</body>
+</html>

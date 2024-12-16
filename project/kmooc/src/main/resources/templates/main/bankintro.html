@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        /* styles.css */
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        small {
+            color: #999;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table thead th {
+            background-color: #007acc;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .comparison-table tbody td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .comparison-table tbody tr:hover {
+            background-color: #eaf6ff;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+
+
+<section class="content" layout:fragment="maincontent">
+    <div class="container">
+        <h1>K-MOOC 학점은행제 학습과정이란?</h1>
+        <p>
+            기존에 운영중인 K-MOOC 강좌 중, 학점은행제 평가인정 절차에 따라 "평가인정 학습과정"으로 승인받은 강좌로 본 강좌를 이수한 학습자는 학점은행제로 학점을 인정받을 수 있습니다.
+            <br>
+            <small>※ 근거: 학점인정 등에 관한 법률 시행령 제3조 제10항 (2019.1.1 시행)</small>
+        </p>
+
+        <h2>K-MOOC '학점은행제 학습과정'과 '비학점은행제 학습과정'은 어떻게 다른가요?</h2>
+
+        <table class="comparison-table">
+            <thead>
+            <tr>
+                <th>구분</th>
+                <th>학점은행제 학습과정</th>
+                <th>비학점은행제 학습과정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>수강신청 기간</td>
+                <td>개강일로부터 2주까지로 제한</td>
+                <td>개강일 이후에도 자유롭게 신청 가능</td>
+            </tr>
+            <tr>
+                <td>수강신청 강좌</td>
+                <td>제한 있음</td>
+                <td>제한 없음</td>
+            </tr>
+            <tr>
+                <td>수강 인원</td>
+                <td>제한 (각 강좌별 상이)</td>
+                <td>제한 없음</td>
+            </tr>
+            <tr>
+                <td>학습</td>
+                <td>출석 및 학습활동 수행</td>
+                <td>강좌 운영 기간 내 학습 활동 수행</td>
+            </tr>
+            <tr>
+                <td>수강료</td>
+                <td>무료</td>
+                <td>무료</td>
+            </tr>
+            <tr>
+                <td>평가요소</td>
+                <td>출석 + 성적 (출석률 80% 이상 + 성적 60점 이상)</td>
+                <td>해당 없음</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+</body>
+</html>

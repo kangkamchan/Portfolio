@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+    /* styles.css */
+
+
+    .card-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 15px 20px;
+        width: 250px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+
+    .card-icon {
+        font-size: 2rem;
+    }
+
+    .card-info h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #333;
+    }
+
+    .card-info p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+
+
+</style>
+<body>
+
+<div th:replace="admin/header :: header"></div>
+
+<section class="content">
+    <div class="card-container">
+        <div class="card">
+            <div class="card-icon" style="color: #22c55e;">📄</div>
+            <div class="card-info">
+                <h2 th:text="${mainPageInfo[newCourseOneMonth]}"></h2>
+                <p>최근 등록한 강의 수(한 달)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon" style="color: #a855f7;">📄</div>
+            <div class="card-info">
+                <h2 th:text="${mainPageInfo[totalCourseCount]}"></h2>
+                <p>강의 수</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon" style="color: #3b82f6;">👥</div>
+            <div class="card-info">
+                <h2 th:text="${mainPageInfo[newMemberOneMonth]}"></h2>
+                <p>최근 가입한 회원 수(한 달)</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon" style="color: #f97316;">👥</div>
+            <div class="card-info">
+                <h2 th:text="${mainPageInfo[totalMemberCount]}"></h2>
+                <p>총 회원수</p>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+
+</body>
+</html>

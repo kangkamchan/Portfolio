@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Layout Page</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    table td {
+        background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .reply-button {
+        background-color: #007bff; /* 파란색 */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .reply-button:hover {
+        background-color: #0056b3; /* 어두운 파란색 */
+        transform: scale(1.05);
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff; /* Navy blue background */
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .category-dropdown {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 3px;
+        background-color: white;
+        color: #333;
+        font-size: 14px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .search-input {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #333;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #999;
+    }
+
+    .search-button {
+        background-color: #007bff; /* Green button */
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+    }
+
+    .search-button i {
+        font-size: 16px;
+    }
+
+</style>
+<body>
+
+<div th:replace="admin/header :: header"></div>
+
+<section class="content">
+    <div class="container">
+        <h1>QnA 리스트</h1>
+        <div class="search-bar">
+            <select class="category-dropdown">
+                <option value="all">전체</option>
+                <option value="category1">카테고리1</option>
+                <option value="category2">카테고리2</option>
+            </select>
+            <input type="text" class="search-input" placeholder="검색어를 입력하세요.">
+            <button class="search-button">찾기</button>
+        </div>
+        <table id="result-table">
+            <thead>
+            <tr>
+                <th>회원 아이디</th>
+                <th>질문 제목</th>
+                <th>질문 내용</th>
+                <th>답변 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>63</td>
+                <td>자료집</td>
+                <td>인공지능 및 컴퓨터 분야 이수체계도 안내</td>
+                <td>답변 대기중</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+
+</body>
+</html>

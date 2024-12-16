@@ -1,0 +1,64 @@
+/* General Styles */
+
+.main-container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: rgba(133, 129, 129, 0.06);
+    color: #000000;
+    padding: 20px;
+    height: 100vh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 5px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.sidebar ul li strong {
+    font-weight: bold;
+    color: #0fbc8c;
+}
+
+/* Content */
+.content {
+    flex: 1;
+    background-color: #fff;
+    margin-top: -7px;
+}
+
+.header2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #000;
+    color: #fff;
+    border-bottom: 4px solid #3d4a59;
+    height: 100px;
+
+}
+
+.header2 h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.user-info {
+    font-size: 14px;
+}

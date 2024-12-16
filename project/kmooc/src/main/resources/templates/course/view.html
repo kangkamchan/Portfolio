@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        /* General Styles */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .breadcrumb span {
+            margin-right: 5px;
+        }
+
+        /* Course Header */
+        .course-header {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-image {
+            position: relative;
+            width: 50%;
+        }
+
+        .course-image img {
+            width: 500px;
+            height: 450px;
+        }
+
+        .status-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .d-label {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .course-details {
+            padding: 20px;
+            width: 50%;
+        }
+
+        .course-details h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .details-list li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .rating {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .enroll-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .enroll-button:hover {
+            background: #0056b3;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            background: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        /* Course Introduction Section */
+        .course-introduction {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .introduction-banner img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .introduction-details h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .introduction-details p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        /* Course List */
+        .course-list p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .course-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            width:100%;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .course-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<section class="content" layout:fragment="maincontent">
+
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+
+        <!-- Course Header -->
+        <div class="course-header">
+            <div class="course-image" style="height: 500px;">
+                <img th:src="${courseViewDTO.thumbnail}" alt="Course Image">
+            </div>
+            <div class="course-details">
+                <h1 th:text="${courseViewDTO.title}"></h1>
+                <ul class="details-list">
+                    <li><strong>분야:</strong>[[${courseViewDTO.subject.subjectName}]]</li>
+                    <li th:utext="'<strong>기관:</strong>' + ${courseViewDTO.teacher.institution.institutionName}"></li>
+                    <li><strong>학습기간:</strong> [[${courseViewDTO.weeks}]]주</li>
+                </ul>
+
+                <button class="enroll-button" th:if="${isEnrolled == null}" th:data-courseId="${courseViewDTO.courseId}" onclick="courseEnrollment(this)">수강신청</button>
+                <button class="enroll-button" th:if="${isEnrolled != null}" th:data-courseId="${courseViewDTO.courseId}" th:onclick="'learn('+${courseViewDTO.courseId}+')'">학습하기</button>
+            </div>
+        </div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab" id="btnIntro">강좌소개</button>
+            <button class="tab" id="btnTeacher">강좌운영진</button>
+            <button class="tab" id="btnReclist">추천 강좌</button>
+        </div>
+
+        <!-- Course Introduction Section -->
+        <section class="course-introduction" id="intro">
+            <div class="introduction-details">
+                <h2>강좌 소개</h2>
+                <p th:utext="${courseViewDTO.description}"></p>
+            </div>
+        </section>
+
+        <section class="course-introduction" id="teacher">
+            <div class="introduction-details">
+                <h2>강사</h2>
+                <p class="course-details" th:text="${courseViewDTO.teacher.teacherName}"></p>
+            </div>
+        </section>
+
+        <section class="course-list" id="reclist">
+            <h2>추천 강좌</h2>
+            <div class="courses">
+                <div class="courses" th:each="course,status : ${courseViewDTO.recommendations}" th:onclick="'view('+${course.courseId}+')'">
+                    <div class="course-card">
+                        <div class="course-image" th:style="'background-image: url('+${course.thumbnail}+');'"></div>
+                        <h3 th:text="${course.title}"></h3>
+                        <p th:text="${course.teacher.teacherName}"></p>
+                        <p th:text="${course.teacher.institution.institutionName}"></p>
+                        <p th:text="${#temporals.format(course.createdAt,'yyyy-MM-dd')}"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<script>
+
+</script>
+<script layout:fragment="script" th:inline="javascript">
+
+    const intro = document.getElementById("btnIntro")
+    intro.addEventListener("click", ()=>{
+       location.href='#intro'
+    });
+
+    const teacher = document.getElementById("btnTeacher")
+    teacher.addEventListener("click", ()=>{
+        location.href='#teacher'
+    });
+
+    const reclist = document.getElementById("btnReclist")
+    reclist.addEventListener("click", ()=>{
+        location.href='#reclist'
+    });
+
+    const tabs = document.querySelectorAll(".tab"); // Select all tabs
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            // Remove 'active' class from all tabs
+            tabs.forEach((t) => t.classList.remove("active"));
+
+            // Add 'active' class to the clicked tab
+            tab.classList.add("active");
+        });
+    });
+    function view(courseId) {
+        location.href = "/course/view?courseId=" + courseId;
+    }
+    async function courseEnrollment(button) {
+        const courseId = button.getAttribute("data-courseId");
+        try {
+            const response = await fetch(`/courseEnrollment/regist/${courseId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            if (!response.ok) {
+                console.log("response not ok");
+                const error = await response.json();
+                console.log(error.message);
+                alert(error.message);
+                return;
+            }
+            console.log("response ok");
+            let result = await response.json()
+            let flag = confirm(result.message + '\r\n 나의학습방으로 이동하시겠습니까?');
+            if(flag){
+                location.href="/mypage/myclass";
+            }else{
+                location.reload();
+            }
+        } catch (error) {
+            console.error('수강신청 에러:', error);
+            alert(error.message || '수강신청에 실패했습니다.');
+        }
+    }
+    function learn(courseId){
+        location.href=`/learn/view/${courseId}`;
+    }
+</script>
+
+</body>
+</html>

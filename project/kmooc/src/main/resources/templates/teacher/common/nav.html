@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">K-MOOC</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${currentPage == 'myLectures'} ? 'active' : ''" 
+                       href="/teacher/myLectures">내 강의 관리</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${currentPage == 'registLecture'} ? 'active' : ''" 
+                       href="/teacher/registLecture">강의 등록</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" th:classappend="${currentPage == 'students'} ? 'active' : ''" 
+                       href="/teacher/students">수강생 관리</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${currentPage == 'statistics'} ? 'active' : ''" 
+                       href="/teacher/statistics">통계</a>
+                </li> -->
+                <li class="nav-item">
+                    <button class="btn ms-2" onclick="toggleTheme()" style="background: none; border: none;">
+                        🌙
+                    </button>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <span th:text="${session.teacher.teacherName}">강사명</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/teacher/profile">프로필 관리</a></li>
+                        <li><a class="dropdown-item" href="/teacher/notifications">알림 센터</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+    
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .search-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .search-box label {
+        font-size: 14px;
+        color: #333;
+    }
+
+    .search-box select, .search-box input {
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 150px;
+    }
+
+    .search-box button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .search-box button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    table td {
+        background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+
+</style>
+<body>
+
+
+<div th:replace="admin/header :: header"></div>
+<section class="content">
+    <div class="container">
+        <h1>회원 검색</h1>
+        <form method="get" action="/admin/memberList">
+            <div class="search-box">
+
+                <label for="typeSelect">구분</label>
+                <select id="typeSelect" name="typeSelect" onchange="updateMemberOptions()">
+                    <option value="t" th:selected="${pageDTO.typeSelect == 't'}">강사</option>
+                    <option value="s" th:selected="${pageDTO.typeSelect == 's'}">학생</option>
+                </select>
+
+                <!-- 학생 선택 시 표시되는 옵션 -->
+                <div id="student-options"  th:style="${pageDTO.typeSelect == 't'} ? 'display:none;' : 'display:block;'">
+                    <label for="memberType">학생 상태:</label>
+                    <select id="memberType" name="memberType">
+                        <option value="-1" th:selected="${pageDTO.memberType == -1}">전체</option>
+                        <option value="0" th:selected="${pageDTO.memberType == 0}">일반학생</option>
+                        <option value="1" th:selected="${pageDTO.memberType == 1}">학점은행제학생</option>
+                    </select>
+                </div>
+
+                <!-- 강사 선택 시 표시되는 옵션 -->
+                <div id="instructor-options" th:style="${pageDTO.typeSelect == 't'} ? 'display:block;' : 'display:none;'">
+                    <label for="isApproved">강사 상태:</label>
+                    <select id="isApproved" name="isApproved">
+                        <option value="-1" th:selected="${pageDTO.isApproved == -1}">전체</option>
+                        <option value="1" th:selected="${pageDTO.isApproved == 1}">승인</option>
+                        <option value="0" th:selected="${pageDTO.isApproved == 0}">미승인</option>
+                    </select>
+                </div>
+
+                <label for="status">회원 상태:</label>
+                <select id="status" name="status">
+                    <option value="">전체</option>
+                    <option value="ACTIVE" th:selected="${pageDTO.status == 'ACTIVE'}">활성화</option>
+                    <option value="INACTIVE" th:selected="${pageDTO.status == 'INACTIVE'}">비활성화</option>
+                    <option value="WITHDRAWN" th:selected="${pageDTO.status == 'WITHDRAWN'}">탈퇴</option>
+                </select>
+
+                <label for="searchId">아이디:</label>
+                <input type="text" id="searchId" name="searchId" placeholder="아이디 검색" maxlength="50" th:value="${pageDTO.searchId}">
+
+                <button type="submit">검색</button>
+            </div>
+        </form>
+
+        <table id="result-table">
+            <thead>
+            <tr>
+                <th>아이디</th>
+                <th th:if="${pageDTO.typeSelect == 't'}">가입승인</th>
+                <th th:unless="${pageDTO.typeSelect == 't'}">회원종류</th>
+                <th>회원 상태</th>
+                <th>가입일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 검색 결과가 여기에 출력됩니다 -->
+            <th:block th:if="${pageDTO.typeSelect == 't'}">
+                <tr th:each="item, status:${pageinfo.content}">
+                    <td><a th:href="@{/admin/memberView/{type}(type='t',memberId=${item.teacherId})}" th:text="${item.teacherId}"></a></td>
+                    <td th:text="${item.isApproved}"></td>
+                    <td th:text="${item.status}"></td>
+                    <td th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </th:block>
+            <th:block th:unless="${pageDTO.typeSelect == 't'}">
+                <tr th:each="item, status:${pageinfo.content}">
+                    <td><a th:href="@{/admin/memberView/{type}(type='s',memberId=${item.memberId})}" th:text="${item.memberId}"></a></td>
+                    <td th:text="${item.memberType}"></td>
+                    <td th:text="${item.status}"></td>
+                    <td th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </th:block>
+            <tr th:if="${pageinfo.content.isEmpty()}">
+                <td colspan="4">검색 결과가 없습니다.</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div th:replace="main/paging :: paging"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+<script th:src="@{/js/paging.js}"></script>
+<script>
+    function updateMemberOptions() {
+        const memberType = document.getElementById('typeSelect').value;
+        const studentOptions = document.getElementById('student-options');
+        const instructorOptions = document.getElementById('instructor-options');
+
+        // 학생이 선택된 경우: 학생 상태 선택 창을 보이게
+        if (memberType === 's') {
+            studentOptions.style.display = 'block';
+            instructorOptions.style.display = 'none';
+        }
+        // 강사가 선택된 경우: 강사 상태 선택 창을 보이게
+        else if (memberType === 't') {
+            studentOptions.style.display = 'none';
+            instructorOptions.style.display = 'block';
+        }
+        // 아무것도 선택되지 않은 경우: 모두 숨기기
+        else {
+            studentOptions.style.display = 'none';
+            instructorOptions.style.display = 'block';
+        }
+    }
+
+</script>
+</body>
+</html>

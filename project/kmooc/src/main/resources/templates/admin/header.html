@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<body>
+<div th:fragment="header">
+    <script>
+        const errors = `[[${errors ?: ''}]]`;
+        if (errors && errors.trim() !== '') {
+            alert(errors);
+        }
+        const error = `[[${errorr ?: ''}]]`;
+        if (error && error.trim() !== '') {
+            alert(error);
+        }
+    </script>
+    <header class="header">
+        <div class="logo">
+            <a href="/admin/main"><img th:src="@{/images/logo.png}" alt="K-MOOC 로고"></a>
+        </div>
+        <nav class="navbar">
+            <ul class="menu-list">
+                <div class="menu-icon dropdown">
+                    <a href="/admin/memberList">회원 관리</a>
+                </div>
+                <div class="menu-icon dropdown">
+                    <a href="/admin/courseList">강의 관리</a>
+                </div>
+                <div class="menu-icon dropdown">
+                    <a href="/admin/noticeList">공지사항 관리</a>
+                </div>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="/admin/logout" id="loginBtn" th:if="${session.loginAdminId}">로그아웃</a>
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

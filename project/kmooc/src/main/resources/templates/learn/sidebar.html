@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+</head>
+<body>
+<div class="main-container" th:fragment="sidebar">
+    <aside class="sidebar">
+        <h2>강의의 목록</h2>
+        <ul class="lecture-list" th:each="lecture : ${course.lectures}">
+            <li th:text="${lecture.title}"></li>
+        </ul>
+    </aside>
+
+    <div class="content">
+        <header class="header2">
+            <h1 style="margin-left: 20px;">[[${course.title}]]</h1>
+            <div class="user-info">
+                <span style="margin-right: 20px;">[[${course.teacherName}]]</span>
+            </div>
+        </header>
+
+</body>
+</html>

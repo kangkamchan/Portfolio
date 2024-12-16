@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"  layout:decorate="~{main/headerlayout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/learnsidebar.css}" rel="stylesheet" />
+    <style>
+        .content {
+            max-width: 100%;
+            max-height: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Grade Table Container */
+        .grade-table-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Grade Table */
+        .grade-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .grade-table thead th {
+            background-color: #f1f1f1;
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .grade-table tbody td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+
+        .grade-table tbody td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .grade-table tbody td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Bold section titles */
+        .grade-table tbody td strong {
+            font-weight: bold;
+        }
+
+        /* Indentation for sub-items */
+        .grade-table tbody td {
+            text-indent: 20px; /* Indent for hierarchy */
+        }
+
+        /* Section Title Row */
+        .grade-table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Alternate row background */
+        }
+
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="learn/sidebar :: sidebar"></div>
+    <div class="grade-table-container">
+        <table class="grade-table">
+            <thead>
+            <tr>
+                <th>과목, 강좌</th>
+                <th>성적</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>인강 수업</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>제목</a></td>
+                <td>C</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    </div>
+    </div>
+</section>
+
+
+
+</body>
+</html>

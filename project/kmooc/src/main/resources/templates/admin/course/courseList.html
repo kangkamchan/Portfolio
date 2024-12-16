@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    table td {
+        background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+    .reply-button {
+        background-color: #007bff; /* 파란색 */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .reply-button:hover {
+        background-color: #0056b3; /* 어두운 파란색 */
+        transform: scale(1.05);
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff; /* Navy blue background */
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .category-dropdown {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 3px;
+        background-color: white;
+        color: #333;
+        font-size: 14px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .search-input {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #333;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #999;
+    }
+
+    .search-button {
+        background-color: #007bff; /* Green button */
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+    }
+
+    .search-button i {
+        font-size: 16px;
+    }
+
+</style>
+<body>
+
+<div th:replace="admin/header :: header"></div>
+
+<section class="content">
+    <div class="container">
+        <h1>강의 리스트</h1>
+        <form>
+        <div class="search-bar">
+
+
+                <input type="checkbox" name="isCreditBank" value="1" style="margin-right: 10px;" th:checked="${pageDTO.isCreditBank==1}"><span style="margin-right: 10px;">학점은행제</span>
+                <select class="category-dropdown" name="subjectId">
+                    <option value="-1" selected>과목 전체</option>
+                    <th:block th:each="subject, status:${subjects}">
+                        <option th:value="${subject.subjectId}" th:text="${subject.subjectName}" th:selected="${subject.subjectId == pageDTO.subjectId}"></option>
+                    </th:block>
+                </select>
+                <select class="category-dropdown" name="status">
+                    <option value="" selected>상태</option>
+                    <option value="DRAFT" th:selected="${pageDTO.status == 'DRAFT'}">등록(미승인)</option>
+                    <option value="PUBLISHED" th:selected="${pageDTO.status == 'PUBLISHED'}">강의중(승인완료)</option>
+                    <option value="DELETED" th:selected="${pageDTO.status == 'DELETED'}">강의종료(삭제)</option>
+                </select>
+                <input type="hidden" class="search-input" name="searchField" value="title">
+                <input type="text" class="search-input" name="searchValue" placeholder="강의명 검색" th:value="${pageDTO.searchValue}">
+                <button class="search-button" type="submit">찾기</button>
+
+        </div>
+        </form>
+        <table id="result-table">
+            <thead>
+            <tr>
+                <th>강의코드</th>
+                <th>강의명</th>
+                <th>수강 기간</th>
+                <th>수강 상태</th>
+                <th>승인</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, status:${pageinfo.content}">
+                <td th:text="${item.courseId}"></td>
+                <td><a th:href="@{/admin/courseView/{courseId}(courseId=${item.courseId})}" th:text="${item.title}"></a></td>
+                <td th:text="${item.weeks}"></td>
+                <td th:text="${item.status}"></td>
+                <td><button class="reply-button" th:if="${item.status=='DRAFT'}" th:onclick="|location.href='@{/admin/courseApprove/{courseId}(courseId=${item.courseId})}'|">승인</button></td>
+            </tr>
+
+            <tr th:if="${pageinfo.content.isEmpty()}">
+                <td colspan="5">검색 결과가 없습니다.</td>
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                <div th:replace="main/paging :: paging"></div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+<script th:src="@{/js/paging.js}"></script>
+
+</body>
+</html>

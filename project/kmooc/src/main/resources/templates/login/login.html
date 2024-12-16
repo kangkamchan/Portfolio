@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link th:href="@{/css/login.css}" rel="stylesheet"/>
+
+</head>
+<body>
+
+<div class="content" layout:fragment="maincontent">
+    <form class="login-form" action="/login/login" method="post">
+        <h1>로그인</h1>
+        <div class="login-form">
+            <input type="text" id="memberId" name="memberId" placeholder="아이디를 입력하세요." class="input-field">
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="input-field">
+            <div class="find-links">
+                <a href="/login/findId">이메일 찾기</a> | <a href="/login/findPwd">비밀번호 찾기</a>
+            </div>
+            <button class="login-button" type="submit">로그인</button>
+            <button class="signup-button" type="button" onclick="goRegist()">회원가입</button>
+            <button class="signup-button" type="button" onclick="goTeacher()" style="margin-top: 10px;">선생님 로그인</button>
+        </div>
+    </form>
+</div>
+<script layout:fragment="script" th:inline="javascript">
+    function goRegist() {
+        window.location.href = '/login/memberchose';
+    }
+
+    function goTeacher() {
+        window.location.href = '/teacher/login';
+    }
+</script>
+
+</body>
+</html>

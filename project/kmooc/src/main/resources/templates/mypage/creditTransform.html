@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/mypagesidebar.css}" rel="stylesheet" />
+    <style>
+        .content {
+            display: flex; /* Flexbox로 변경 */
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            align-items: stretch; /* 양쪽 높이를 동일하게 유지 */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            padding: 5px;
+            color: #666;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .step.active {
+            color: #007bff;
+            font-weight: bold;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* Consent Box */
+        .consent-box {
+            background: #f7f7f7;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .consent-box strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Consent Options */
+        .consent-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 20px;
+            font-size: 16px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        /* Next Button */
+        .next-button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .next-button:hover {
+            background: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="mypage/sidebar ::sidebar"></div>
+
+    <div class="container">
+        <div class="progress-bar">
+            <div class="step active">개인정보 수집/제공 동의</div>
+            <div class="step">내 정보 등록</div>
+            <div class="step">완료</div>
+        </div>
+
+        <h1>K-MOOC 학점은행제 학습과정 개인정보 수집 및 이용에 관한 동의</h1>
+
+        <div class="consent-box">
+            <p><strong>1. 수집하는 개인정보의 항목</strong></p>
+            <p>이름, 아이디, 비밀번호, E-Mail, 주소, 주민등록번호, 핸드폰, 접속주소, IP주소, MAC주소, 성적정보 등</p>
+            <p>주민등록번호는 학점은행제 학점인정에 관한 서류를 위해 "학점인정 등에 관한 법률 시행령 제19조"에 따라 수집됩니다.</p>
+            <br>
+            <p><strong>2. 개인정보의 수집 및 이용 목적</strong></p>
+            <p>K-MOOC 학습과정의 학습 운영 및 민원처리</p>
+            <br>
+            <p><strong>3. 개인정보의 처리 및 보유 기간</strong></p>
+            <p>영구(개인정보 학점인정 운영지침 [교육부 고시])</p>
+            <br>
+            <p><strong>4. 동의를 거부할 권리 고지 및 동의 거부에 따른 불이익</strong></p>
+            <p>정보주체에게는 수집/이용에 대한 동의를 거부할 권리가 있습니다. 단, 동의를 거부할 경우 K-MOOC 학점은행제 학습과정 이용이 불가합니다.</p>
+        </div>
+
+        <div class="consent-options">
+            <label><input type="radio" name="consent" value="agree" id="agree"> 동의함</label>
+            <label><input type="radio" name="consent" value="disagree" id="disagree"> 동의안함</label>
+        </div>
+
+        <button class="next-button" id="next">다음</button>
+    </div>
+</section>
+
+
+<script layout:fragment="script" th:inline="javascript">
+    const next = document.getElementById("next")
+    next.addEventListener("click", ()=>{
+        const agree = document.getElementById("agree").checked;
+
+        if(agree){
+            location.href = '/mypage/creditTransform2';
+        }else {
+            // 체크되지 않은 항목이 있을 경우 경고 알림
+            alert('이용약관 동의는 필수 사항입니다.');
+        }
+    });
+
+</script>
+</body>
+</html>

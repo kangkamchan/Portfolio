@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .content {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        /* General Styles */
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+        }
+
+        /* Header Section */
+        .header2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header2 h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar select, .search-bar input, .search-bar button {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-bar input {
+            flex: 1;
+        }
+
+        .search-bar .search-btn {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar .view-all-btn {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            opacity: 0.9;
+        }
+
+        /* Notice Count */
+        .notice-count {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .notice-count strong {
+            color: #0056b3;
+        }
+
+        /* Notice Table */
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .notice-table th, .notice-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .notice-table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        .notice-table .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 12px;
+            color: white;
+            background-color: #dc3545;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 5px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: #007bff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .page-btn.active {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .page-btn:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .blue-button {
+            margin-top: 20px;
+            background-color: #007bff; /* Blue background */
+            color: white; /* White text */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Add padding */
+            font-size: 14px; /* Adjust font size */
+            font-weight: bold; /* Bold text */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth hover effects */
+        }
+
+        .blue-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+
+
+<section class="content" layout:fragment="maincontent">
+
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header2">
+            <h1>QnA</h1>
+            <div class="search-bar">
+                <select>
+                    <option>전체</option>
+                    <option>공지</option>
+                    <option>이벤트</option>
+                </select>
+                <input type="text" placeholder="검색어를 입력하세요.">
+                <button class="search-btn">검색</button>
+            </div>
+        </header>
+
+        <!-- Notice Count -->
+        <p class="notice-count">총 <strong>230건</strong></p>
+
+        <!-- Notice Table -->
+        <table class="notice-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>등록일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>230</td>
+                <td>국가평생교육진흥원 중장기 발전계획 개선을 위한 대국민 의견수렴 설문조사</td>
+                <td>2024.11.12</td>
+            </tr>
+            <tr>
+                <td>229</td>
+                <td>2024년 하반기 한국형 온라인 공개강좌(K-MOOC) 사업 안내 영상 및 FAQ 공개</td>
+                <td>2024.10.21</td>
+            </tr>
+            <!-- Add more rows as necessary -->
+            </tbody>
+        </table>
+
+        <button class="blue-button">QnA 등록</button>
+
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn">&lt;</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">&gt;</button>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/mypagesidebar.css}" rel="stylesheet" />
+    <style>
+        .content {
+            display: flex; /* Flexbox로 변경 */
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            align-items: stretch; /* 양쪽 높이를 동일하게 유지 */
+        }
+
+        .container {
+            min-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            padding: 5px;
+            color: #666;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .step.active {
+            color: #007bff;
+            font-weight: bold;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* General Styles */
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-top: 30px;
+            font-weight: bold;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .info-table th, .info-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-table th {
+            font-weight: bold;
+            width: 30%;
+            background-color: #f7f7f7;
+        }
+
+        .info-table td {
+            background-color: #fff;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .address-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .address-group input {
+            flex: 1;
+        }
+
+        .address-group .btn {
+            flex-shrink: 0;
+            padding: 8px 12px;
+            font-size: 14px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .address-group .btn:hover {
+            background: #0056b3;
+        }
+
+        input[disabled] {
+            background-color: #f1f1f1;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        /* Button Styles */
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .btn-prev {
+            background: #ccc;
+            color: #000;
+        }
+
+        .btn-next {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="mypage/sidebar ::sidebar"></div>
+
+    <div class="container">
+        <div class="progress-bar">
+            <div class="step">개인정보 수집/제공 동의</div>
+            <div class="step active">내 정보 등록</div>
+            <div class="step">완료</div>
+        </div>
+        <h1>K-MOOC 기본 회원 정보</h1>
+        <table class="info-table">
+            <tr>
+                <th>사용자 아이디</th>
+                <td th:text="${memberInfo.memberId}"></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td th:text="${memberInfo.userName}"></td>
+            </tr>
+            <tr>
+                <th>이메일 주소</th>
+                <td th:text="${memberInfo.email}"></td>
+            </tr>
+        </table>
+
+        <h2>학점은행제 K-MOOC 학습과정 회원정보</h2>
+        <form action="/mypage/creditTransform2" method="post">
+            <div class="form-group">
+                <label for="name">이름(실명)</label>
+                <input type="text" id="name" name="name" placeholder="홍길동" required th:value="${item != null ? item.name : ''}">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">휴대전화</label>
+                <input type="phone" pattern="^\d{11}$" id="phone" name="phone" placeholder="연락 가능한 휴대전화 번호를 입력하세요. (숫자만 기재가능)" required th:value="${item != null ? item.phone : ''}">
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-prev" id="preBtn" onclick="location.href='/mypage/creditTransform'">이전</button>
+                <button type="submit" class="btn btn-next" id="okBtn">다음</button>
+            </div>
+        </form>
+    </div>
+
+
+
+</section>
+
+</body>
+</html>

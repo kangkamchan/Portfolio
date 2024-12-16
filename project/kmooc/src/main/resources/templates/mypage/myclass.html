@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/mypagesidebar.css}" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-info h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .user-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .stats  {
+            flex: 1;
+            background-color: #ecf0f1;
+            padding: 15px;
+            margin-right: 10px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .stat-card{
+            flex: 1;
+            background-color: #ecf0f1;
+            padding: 15px;
+            margin-right: 10px;
+            text-align: center;
+            border-radius: 8px;
+            width: 120px;
+
+        }
+
+        .stats .stat-card:last-child {
+            margin-right: 0;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .stat-card p {
+            margin: 10px 0 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        /* Course Section */
+        .course-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .course-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .course-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-width: 300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-details {
+            flex: 1;
+        }
+
+        .course-details h4 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .course-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .course-actions {
+            text-align: right;
+        }
+
+        .course-actions button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .learn-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .content {
+            display: flex; /* Flexbox로 변경 */
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            align-items: stretch; /* 양쪽 높이를 동일하게 유지 */
+        }
+
+
+        .main-content {
+            flex: 1; /* 나머지 공간 차지 */
+            padding: 20px;
+        }
+
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="mypage/sidebar ::sidebar" class="sidebar"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- User Info -->
+        <div class="user-info">
+            <div>
+                <img th:src="@{/images/man.png}" style="width: 130px;" />
+                <h2>[[${member.userName}]]님 안녕하세요.</h2>
+                <p>이메일 주소: [[${member.email}]]</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card" style="background-color: #1abc9c">
+                <h3>수강중인 강좌 수</h3>
+                <p th:text="${notcompleted}"></p>
+            </div>
+            <div class="stat-card" style="background-color: #cccccc">
+                <h3>청강중인 강좌 수</h3>
+                <p>0</p>
+            </div>
+            <div class="stat-card" style="background-color: #cccccc">
+                <h3>종료한 강좌 수</h3>
+                <p th:text="${completed}"></p>
+            </div>
+        </div>
+        <!-- Courses -->
+        <h3>수강중인 강좌</h3>
+        <div class="course-section">
+            <div class="course-card" th:each="item, status:${courselist.content}">
+                <div class="course-details">
+                    <h4 th:text="${item.title}"></h4>
+                    <p th:text="${item.teacherName}"></p>
+                    <p th:text="'등록일 ' + ${#temporals.format(item.createdAt, 'yyyy-MM-dd')}"></p>
+                    <p>[[${item.weeks}]]주</p>
+                </div>
+                <div class="course-actions">
+                    <button class="learn-btn" id="learnGoBtn" th:onclick="|location.href='@{/learn/view/{courseId}(courseId=${item.courseId})}'|">학습하기</button>
+                    <button class="cancel-btn" th:data-courseId="${item.courseId}" onclick="unenroll(this)">수강취소</button>
+                </div>
+            </div>
+            <div th:if="${courselist.content.isEmpty()}">
+                수강 중인 강의가 없습니다.
+            </div>
+        </div>
+        <div th:replace="main/paging :: paging"></div>
+    </div>
+    <script th:src="@{/js/unenroll.js}"></script>
+    <form action="/mypage/myclass" method="get"></form>
+</section>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    table td {
+        background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .important-box {
+        background-color: red;
+        color: white;
+        border-radius: 3px;
+        font-size: small;
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff; /* Navy blue background */
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .category-dropdown {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 3px;
+        background-color: white;
+        color: #333;
+        font-size: 14px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+
+    .search-input {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        color: #333;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #999;
+    }
+
+    .search-button {
+        background-color: #007bff; /* Green button */
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+    }
+
+    .search-button i {
+        font-size: 16px;
+    }
+
+
+</style>
+<body>
+
+<div th:replace="admin/header :: header"></div>
+
+<section class="content">
+    <div class="container">
+        <h1>공지사항 리스트</h1>
+        <form action="/admin/noticeList">
+            <div class="search-bar">
+                <select name="searchField" class="category-dropdown">
+                    <option value="">제목+내용</option>
+                    <option th:selected="${pageDTO.searchField == 'title'}" value="title">제목</option>
+                    <option th:selected="${pageDTO.searchField == 'content'}" value="content">내용</option>
+                </select>
+                <input name="searchValue" type="text" class="search-input" placeholder="검색어를 입력하세요." th:value="${pageDTO.searchValue}" maxlength="100">
+                <button class="search-button">찾기</button>
+            </div>
+        </form>
+        <table id="result-table">
+            <thead>
+            <tr>
+                <th>등록일</th>
+                <th>제목</th>
+                <th>작성자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item, status:${pageinfo}">
+                <td th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td>
+                    <a th:text="${item.title}" th:href="@{/admin/noticeView/{noticeId}(noticeId=${item.noticeId})}"></a>
+                    <span class="important-box" th:if="${item.importance == 0}" th:text="중요"></span>
+                </td>
+                <td th:text="${item.adminName}"></td>
+            </tr>
+            <tr th:if="${pageinfo.content.isEmpty()}">
+                <td colspan="3">검색 결과가 없습니다.</td>
+            </tr>
+            <tr>
+               <td colspan="3">
+                   <div th:replace="main/paging :: paging"></div>
+               </td>
+            </tr>
+            </tbody>
+            <button class="search-button" id="nRegist" style="font-size: 18px;">공지사항 등록</button>
+        </table>
+    </div>
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+
+<script th:src="@{/js/paging.js}"></script>
+<script>
+    const nRegist = document.getElementById("nRegist")
+    nRegist.addEventListener("click", ()=>{
+       location.href='/admin/noticeRegist'
+    });
+</script>
+
+</body>
+</html>

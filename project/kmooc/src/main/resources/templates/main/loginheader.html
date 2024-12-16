@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+>
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <style>
+        .dropdown-btn1 {
+            position: relative;
+            z-index: 1;
+            background: none;
+            border: none; /* Remove the border */
+            padding: 5px 10px;
+            border-radius: 5px; /* You can keep this for rounded corners */
+            cursor: pointer; /* Optional: Add pointer cursor for better interactivity */
+        }
+
+        .dropdown-menu1 {
+            position: absolute;
+            top: 40px; /* Adjust to sit just below the button */
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            list-style: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+            display: none; /* Hidden by default */
+            width: 300px; /* Adjust dropdown menu width */
+            z-index: 10;
+            padding: 0;
+        }
+
+        .dropdown-menu li {
+            padding: 10px;
+            font-size: 18px;
+            transition: background-color 0.3s ease; /* Add smooth hover effect */
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #f5f5f5; /* Highlight menu item on hover */
+        }
+
+        .dropdown-menu li a {
+            text-decoration: none;
+            color: #000;
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Show dropdown menu on hover */
+        }
+
+
+    </style>
+</head>
+<body>
+<div th:fragment="header">
+    <header class="header">
+        <div class="logo">
+            <a href="/main/main"><img th:src="@{/images/logo.png}" alt="K-MOOC 로고"></a>
+        </div>
+        <nav class="navbar">
+            <ul class="menu-list">
+                <div class="menu-icon dropdown">
+                    <button class="dropdown-btn">&#9776; 강좌</button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">전체 강좌 보기</a></li>
+                        <li><a href="#">인문</a></li>
+                        <li><a href="#">사회</a></li>
+                        <li><a href="#">공학</a></li>
+                    </ul>
+                </div>
+                <div class="menu-icon dropdown">
+                    <a href="#">상시강좌</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">대학강좌</a></li>
+                        <li><a href="#">대학 외 강좌</a></li>
+                    </ul>
+                </div>
+                <div class="menu-icon dropdown">
+                    <a href="#">학점은행</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">학점은행제 소개</a></li>
+                        <li><a href="#">학점은행제 강좌</a></li>
+                    </ul>
+                </div>
+                <div class="menu-icon dropdown">
+                    <a href="#">커뮤니티</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">사업 공고</a></li>
+                        <li><a href="#">공지 사항</a></li>
+                        <li><a href="#">Q n A</a></li>
+                    </ul>
+                </div>
+                <li><a href="#"><img th:src="@{/images/search.png}"></a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <nav class="navbar">
+                <ul class="menu-list">
+                    <a href="/login/login" id="loginBtn" style="color: black;margin-right: -15px;margin-top: 20px;">나의 강의실</a>
+                    <a href="#"><img th:src="@{/images/bell.png}" style="width:35px; margin-bottom: -30px;"></a>
+                    <div class="menu-icon dropdown">
+                        <a class="dropdown-btn1"><img th:src="@{/images/man.png}" style="width:65px;margin-left: -13px;"></a>
+                        <ul class="dropdown-menu" style="width: 300px">
+                            <img th:src="@{/images/man.png}">
+                            <h2 style="margin-left: 12px;color: black">[[${session.memberDTO.userName}]] 님</h2>
+                            <hr>
+                            <li><a href="/mypage/myclass"><i class="fas fa-chalkboard"></i><img th:src="@{/images/a3.png}" style="width: 30px; margin-right: 4px; margin-bottom: -8px;" /> 내 강의실</a></li>
+                            <li><a href="#"><i class="fas fa-graduation-cap"></i><img th:src="@{/images/a2.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> K-MOOC 학점은행제</a></li>
+                            <!--<li><a href="#"><i class="fas fa-star"></i> 관심분야설정</a></li> 시간나면 하기루-->
+                            <li><a href="#"><i class="fas fa-user-cog"></i><img th:src="@{/images/a1.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> 개인정보관리</a></li>
+                            <hr><li><a href="#"><i class="fas fa-user-cog"></i><img th:src="@{/images/logout.png}" style="width: 30px; margin-right: 4px;margin-bottom: -8px;"/> 로그아웃</a></li>
+                        </ul>
+                    </div>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</div>
+
+</body>
+</html>

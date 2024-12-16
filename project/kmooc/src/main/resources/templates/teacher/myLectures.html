@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="teacher/common/header :: head"></head>
+<body>
+    <nav th:replace="teacher/common/nav :: nav"></nav>
+    
+    <div class="container mt-4">
+        <h2>내 강의 목록</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div th:each="lecture : ${lectures}" class="col">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img th:src="${lecture.thumbnail}" 
+                                 class="img-fluid rounded-start w-100 h-100 object-fit-cover" 
+                                 alt="강의 썸네일"
+                                 style="min-height: 200px;">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a th:href="@{/teacher/courses/{id}/detail(id=${lecture.courseId})}" 
+                                       th:text="${lecture.title}">강좌 제목</a>
+                                </h5>
+                                <p class="card-text">
+                                    <small class="text-muted" 
+                                           th:text="${lecture.subject.subjectName + ' | ' + lecture.weeks + '주차'}">
+                                    </small>
+                                </p>
+                                <p class="card-text" th:text="${lecture.description}">강좌 설명</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge" 
+                                          th:classappend="${lecture.status == 'DRAFT' ? 'bg-warning text-dark' : 
+                                                         (lecture.status == 'PUBLISHED' ? 'bg-success' : 'bg-danger')}"
+                                          th:text="${lecture.status == 'DRAFT' ? '임시저장' : 
+                                                  (lecture.status == 'PUBLISHED' ? '공개' : '삭제됨')}">
+                                    </span>
+                                    <div th:if="${lecture.status == 'DRAFT'}" class="btn-group">
+                                        <a th:href="@{'/teacher/lectures/edit/' + ${lecture.courseId}}" 
+                                           class="btn btn-sm btn-outline-secondary">수정</a>
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                th:onclick="'deleteLecture(' + ${lecture.courseId} + ')'">삭제</button>
+                                    </div>
+                                    <div th:if="${lecture.status != 'DRAFT'}" class="alert alert-warning text-center ms-2" role="alert">
+                                        공개된 강의는 수정이나 삭제가 불가능합니다. 관리자에게 문의하세요.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" th:if="${lectures.size() == 0}">
+                <p class="text-center">등록된 강의가 없습니다.</p>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        async function deleteLecture(courseId) {
+            if (!confirm('정말 이 강의를 삭제하시겠습니까?')) return;
+            try {
+                const response = await fetch(`/api/teacher/courses/${courseId}`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    alert('강의가 삭제되었습니다.');
+                    location.href = '/teacher/myLectures';
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || '강의 삭제 실패');
+                }
+            } catch (error) {
+                alert(`강의 삭제에 실패했습니다. : ${error.message}`);
+                location.reload();
+            }
+        }
+    </script>
+
+    <footer th:replace="teacher/common/footer :: footer"></footer>
+</body>
+</html> 

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/learnsidebar.css}" rel="stylesheet" />
+    <style>
+        .content {
+            max-width: 100%;
+            max-height: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: left;
+            color: #333;
+        }
+
+        /* Quiz Table */
+        .quiz-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .quiz-table thead {
+            background-color: #f1f1f1;
+        }
+
+        .quiz-table th {
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .quiz-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .quiz-table a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .quiz-table a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="learn/sidebar :: sidebar"></div>
+    <div class="quiz-container">
+        <h1>퀴즈</h1>
+        <table class="quiz-table">
+            <thead>
+            <tr>
+                <th>주제</th>
+                <th>제목</th>
+                <th>종료 일시</th>
+                <th>성적</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>[1주차] 개인 비전의 실현을 위한 비즈니스 플래닝</td>
+                <td><a href="#">1-5 학습평가</a></td>
+                <td>기간 제한 없음</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>[2주차] 시장 트렌드와 비즈니스 아이디어 발굴</td>
+                <td><a href="#">2-5 학습평가</a></td>
+                <td>기간 제한 없음</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>[3주차] 시장 세분화와 고객 유형화</td>
+                <td><a href="#">3-5 학습평가</a></td>
+                <td>기간 제한 없음</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>[4주차] 비즈니스 콘셉트의 선정과 개발</td>
+                <td><a href="#">4-5 학습평가</a></td>
+                <td>기간 제한 없음</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>[5주차] 비즈니스 콘셉트 조사와 실현 가능성 점검</td>
+                <td><a href="#">5-5 학습평가</a></td>
+                <td>기간 제한 없음</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+    </div>
+</section>
+
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.fullstack7.mooc.mapper.MemberMapper">
+    <select id="login">
+        SELECT *
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <select id="viewMember">
+        SELECT *
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <select id="pwdCheck">
+        SELECT password
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE member SET password = #{newPassword} WHERE memberId = #{memberId}
+    </update>
+
+    <select id="memberIdCheck" resultType="String">
+        SELECT memberId
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <select id="emailCheck" resultType="String">
+        SELECT email
+            FROM member
+                WHERE email = #{email}
+    </select>
+
+    <insert id="registMember">
+        INSERT INTO member(memberId, password, userName, email, gender, memberType, status, credit
+        ) values (#{memberId}, #{password}, #{userName}, #{email}, #{gender}, #{memberType}, #{status}, #{credit})
+    </insert>
+
+    <update id="modifyMember">
+        UPDATE member
+        SET
+        memberId = #{memberId}
+        <if test="email != null and email != ''">
+            , email = #{email}
+        </if>
+        <if test="password != null and password != ''">
+            , password = #{password}
+        </if>
+        WHERE memberId = #{memberId}
+    </update>
+
+<!--    <update id="modifyMemberWithoutPassword">-->
+<!--        UPDATE member-->
+<!--        SET email = #{email}-->
+<!--        <if test="password != null and password != ''">-->
+<!--            , password = #{password}-->
+<!--        </if>-->
+<!--        WHERE memberId = #{memberId}-->
+<!--    </update>-->
+
+    <delete id="deleteMember">
+        DELETE FROM member
+        WHERE memberId = #{memberId}
+    </delete>
+
+    <select id="findId">
+        select *
+        from member
+        where email = #{email}
+    </select>
+</mapper>

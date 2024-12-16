@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link rel="icon" th:href="@{'/images/favicon.ico'}" type="image/x-icon">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+    }
+
+    .content {
+        max-width: 1500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        height: 800px;
+    }
+
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .report-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .category {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007bff;
+        margin-right: 10px;
+    }
+
+    h2 {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .share-icon {
+        font-size: 20px;
+        cursor: pointer;
+        color: #555;
+    }
+
+    .report-info {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .report-info span {
+        margin-right: 20px;
+    }
+
+    .report-content {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .download-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .download-button:hover {
+        background-color: #0056b3;
+    }
+
+    hr {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #ddd;
+    }
+
+    .navigation {
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .nav-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .nav-item span {
+        font-size: 14px;
+        color: #555;
+    }
+
+    .nav-item a {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+        flex-grow: 1;
+        margin: 0 10px;
+    }
+
+    .nav-item a:hover {
+        text-decoration: underline;
+    }
+
+    .back-button, .back-modify, .back-delete {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+
+<div th:replace="admin/header :: header"></div>
+
+<section class="content">
+
+    <div class="container">
+        <h1>공지사항</h1>
+        <div class="report-header">
+            <span class="category">관리자</span>
+            <h2>[[${item.title}]]</h2>
+        </div>
+        <div class="report-info">
+            <span>작성일: <strong th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></strong></span>
+        </div>
+        <div class="report-content">
+            <p th:text="${item.content}">
+            </p>
+        </div>
+        <hr>
+        <button class="back-modify" th:onclick="|location.href='@{/admin/noticeModify/{noticeId}(noticeId=${item.noticeId})}'|">수정</button>
+        <button class="back-delete" th:onclick="|location.href='@{/admin/noticeDelete/{noticeId}(noticeId=${item.noticeId})}'|">삭제</button>
+    </div>
+
+
+
+</section>
+
+<div th:replace="admin/footer :: footer"></div>
+
+</body>
+</html>

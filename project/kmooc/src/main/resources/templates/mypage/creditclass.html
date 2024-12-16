@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{main/headerlayout.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>K-MOOC</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/mypagesidebar.css}" rel="stylesheet" />
+    <style>
+        .content {
+            display: flex; /* Flexbox로 변경 */
+            max-width: 1500px;
+            min-height: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            align-items: stretch; /* 양쪽 높이를 동일하게 유지 */
+        }
+
+        /* Course Section */
+        .course-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .course-section h3 {
+            margin-bottom: 15px;
+        }
+
+        .course-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            max-height: 250px;
+            width: 300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .course-details {
+            flex: 1;
+        }
+
+        .course-details h4 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .course-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .course-actions {
+            text-align: right;
+        }
+
+        .course-actions button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .learn-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+
+<section class="content" layout:fragment="maincontent">
+    <div th:replace="mypage/sidebar ::sidebar"></div>
+
+    <!-- Courses -->
+
+    <div class="course-section">
+        <h3 style="margin-left: 40px;">수강중인 학점은행제 강좌</h3>
+        <div class="course-card" th:each="item, status:${courselist.content}">
+            <div class="course-details">
+
+                <h4 th:text="${item.title}"></h4>
+                <p th:text="${item.teacherName}"></p>
+                <p th:text="'등록일 ' + ${#temporals.format(item.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                <p>[[${item.weeks}]]주</p>
+                <div class="course-actions">
+                    <button class="learn-btn" th:onclick="|location.href='@{/learn/view/{courseId}(courseId=${item.courseId})}'|">학습하기</button>
+                    <button class="cancel-btn" th:data-courseId="${item.courseId}" onclick="unenroll(this)">수강취소</button>
+                </div>
+            </div>
+        </div>
+        <div th:if="${courselist.content.isEmpty()}">
+            수강 중인 강의가 없습니다.
+        </div>
+    </div>
+    <div>
+        <script th:src="@{/js/unenroll.js}"></script>
+    </div>
+</section>
+
+</body>
+</html>
