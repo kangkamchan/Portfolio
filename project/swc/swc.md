@@ -121,5 +121,5 @@ public class CheckJwtAspect {
 
 ## RESTful API 정의, RestController 및 Ajax통신구현
 
-**[API 정의서](project/swc/REST API.pdf)**
+**[API 정의서](project/swc/REST_API.pdf)**
 
