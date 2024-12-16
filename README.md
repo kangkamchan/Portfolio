@@ -116,4 +116,4 @@
 - 검색, 정렬, 페이징을 처리하는 공통 PageDTO 클래스 구현
 - RestController와 Ajax 통신 사용법 숙달
 
-**[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/kmooc/kmooc_project.md)** 
+**[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/kmooc/kmooc.md)** 
