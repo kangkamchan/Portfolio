@@ -103,3 +103,17 @@
 **[프레젠테이션](project/eduSecond/eduSecond_project.pdf)** | **[주요 소스코드](project/nanusam/nanusam_project.md)** 
 
 ***
+
+### 4.[KMOOC]
+
+> 학점은행제를 지원하는 온라인 교육플랫폼, K-Mooc 사이트를 참고하여 만든 프로젝트
+
+**역할**: 공통 페이징 처리 클래스 개발, 강의 상세보기 프론트/백엔드 구현, 수강신청/취소 RestController와 Ajax 통신 구현
+**기술 스택**: Java, SpringBoot, JPA, Thymeleaf, Javascript, MariaDB
+**주요 기능**:
+**성과**: 
+- SpringBoot와 JPA를 활용한 첫 프로젝트 수행
+- 검색, 정렬, 페이징을 처리하는 공통 PageDTO 클래스 구현
+- RestController와 Ajax 통신 사용법 숙달
+
+**[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/kmooc/kmooc_project.md)** 
