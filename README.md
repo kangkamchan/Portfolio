@@ -142,4 +142,5 @@
  3. **공통 기능 모듈화**  
    - 반복적인 작업을 줄이기 위해 애너테이션과 공통 Util 클래스를 구현.  
    - 개발 효율성을 크게 향상시키고 유지보수성을 강화.
- **[프레젠테이션](project/kmooc/kmooc_project.pdf)** | **[주요 소스코드](project/swc/swc.md)** 
+     
+ **[주요 소스코드](project/swc/swc.md)** 
