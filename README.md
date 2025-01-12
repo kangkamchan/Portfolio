@@ -18,8 +18,6 @@
 - **Others**: ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white) ![HTML](https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=css3&logoColor=white) ![WebSocket](https://img.shields.io/badge/WebSocket-000000?style=flat-square&logo=WebSocket&logoColor=white)
 
 ## 프로젝트 경험
-> 소스 코드는 제가 맡은 부분만 작성되어있습니다.
-> 디자인 저작권 문제로 프론트엔드 원본 소스코드는 올리지 않았습니다.
 
 ### 1.[시험지 제작 웹 페이지 T-Sherpa] [PL]
 > 문제은행 API 에서 받아온 문제를 바탕으로 사용자가 원하는 시험지를 제작하는 교사 대상 웹페이지입니다.
