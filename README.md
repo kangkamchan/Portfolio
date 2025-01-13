@@ -31,6 +31,9 @@
 2. Spring WebFlux라이브러리의 WebClient 를 활용한 Server to Server API 통신 구현
 3. Logging, RedirectWithError 애너테이션과 Aspect 클래스를 구현 반복 코드를 줄이고 클린코드 작성에 기여함
 
+****
+![step0](https://github.com/user-attachments/assets/edc326f2-7c77-4398-b632-e840cde35df9)
+
    
 ### 2.[학습공유 플랫폼 swc]
 > 학습공유와 학습내용 정리를 통한 동기부여와 학업성취도 향상을 목적으로 하는 플랫폼입니다.
